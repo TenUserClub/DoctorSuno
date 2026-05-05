@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DocScribe | Modern Medical Documentation</title>
+    <meta name="description"
+        content="Streamline your clinic with DocScribe. Manage patient records, prescriptions, and billing in one secure, intuitive platform designed for healthcare professionals." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- TopNavBar -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <span class="material-symbols-outlined brand-icon"
+                    style="font-variation-settings:'FILL' 1;">ecg_heart</span>
+                DocScribe
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="#preview">Product Preview</a>
+                <a href="#testimonials">Testimonials</a>
+            </div>
+            <div class="nav-actions">
+                <a class="btn-primary-sm" href="https://docscribe-eta.vercel.app/">Get Started</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it Works</a>
+            <a href="#preview">Product Preview</a>
+            <a href="https://docscribe-eta.vercel.app/" class="btn-primary-sm mobile-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-bg-effects">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-grid-overlay"></div>
+        </div>
+        <div class="container hero-grid">
+            <div class="hero-content fade-up">
+                <span class="hero-badge">
+                    <span class="material-symbols-outlined badge-icon"
+                        style="font-variation-settings:'FILL' 1;">verified</span>
+                    Medical Documentation Redefined
+                </span>
+                <h1 class="hero-title">Modern Documentation for <span class="gradient-text">Modern Clinics</span></h1>
+                <!-- India badge -->
+                <div class="india-badge">
+                    <!-- India tricolor SVG flag -->
+                    <svg class="india-flag-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"
+                        aria-label="India" role="img">
+                        <rect width="900" height="600" fill="#138808" />
+                        <rect width="900" height="400" fill="#fff" />
+                        <rect width="900" height="200" fill="#FF9933" />
+                        <circle cx="450" cy="300" r="90" fill="none" stroke="#000080" stroke-width="7" />
+                        <circle cx="450" cy="300" r="8" fill="#000080" />
+                        <g stroke="#000080" stroke-width="2.5">
+                            <line x1="450" y1="210" x2="450" y2="390" />
+                            <line x1="360" y1="300" x2="540" y2="300" />
+                            <line x1="386" y1="236" x2="514" y2="364" />
+                            <line x1="386" y1="364" x2="514" y2="236" />
+                            <line x1="366" y1="267" x2="534" y2="333" />
+                            <line x1="366" y1="333" x2="534" y2="267" />
+                            <line x1="357" y1="288" x2="543" y2="312" />
+                            <line x1="357" y1="312" x2="543" y2="288" />
+                        </g>
+                    </svg>
+                    <span>Built for India - Multi-language Support</span>
+                </div>
+                <p class="hero-subtitle">Streamline your practice with DocScribe - built specifically for Indian
+                    clinics. Manage patient records, prescriptions, and billing in one secure platform, with native
+                    multi-language support so every doctor can work in the language they're most comfortable in.</p>
+                <div class="hero-ctas">
+                    <a class="btn-primary" href="https://docscribe-eta.vercel.app/">
+                        Try Demo
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a class="btn-secondary" href="#features">
+                        Explore Features
+                    </a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <svg class="india-flag-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"
+                            aria-label="India" role="img">
+                            <rect width="900" height="600" fill="#138808" />
+                            <rect width="900" height="400" fill="#fff" />
+                            <rect width="900" height="200" fill="#FF9933" />
+                            <circle cx="450" cy="300" r="90" fill="none" stroke="#000080" stroke-width="7" />
+                            <circle cx="450" cy="300" r="8" fill="#000080" />
+                            <g stroke="#000080" stroke-width="2.5">
+                                <line x1="450" y1="210" x2="450" y2="390" />
+                                <line x1="360" y1="300" x2="540" y2="300" />
+                                <line x1="386" y1="236" x2="514" y2="364" />
+                                <line x1="386" y1="364" x2="514" y2="236" />
+                                <line x1="366" y1="267" x2="534" y2="333" />
+                                <line x1="366" y1="333" x2="534" y2="267" />
+                                <line x1="357" y1="288" x2="543" y2="312" />
+                                <line x1="357" y1="312" x2="543" y2="288" />
+                            </g>
+                        </svg>
+                        Made in India
+                    </div>
+                    <div class="trust-item">
+                        <span class="material-symbols-outlined trust-icon"
+                            style="font-variation-settings:'FILL' 1;">lock</span>
+                        End-to-End Encrypted
+                    </div>
+                    <div class="trust-item">
+                        <span class="material-symbols-outlined trust-icon"
+                            style="font-variation-settings:'FILL' 1;">speed</span>
+                        99.9% Uptime
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual fade-up delay-200">
+                <div class="hero-browser-frame">
+                    <div class="browser-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <img alt="DocScribe Medical Dashboard - Patient management interface with scheduling, records, and analytics"
+                        class="hero-screenshot" src="images/hero-screenshot.png" />
+                </div>
+                <!-- Floating stats cards -->
+                <div class="float-card float-card-1">
+                    <span class="material-symbols-outlined fc-icon"
+                        style="font-variation-settings:'FILL' 1;">group</span>
+                    <div><span class="fc-number">2,614</span><span class="fc-label">Patients</span></div>
+                </div>
+                <div class="float-card float-card-2">
+                    <span class="material-symbols-outlined fc-icon fc-icon-green"
+                        style="font-variation-settings:'FILL' 1;">trending_up</span>
+                    <div><span class="fc-number">+18%</span><span class="fc-label">Efficiency</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="container stats-grid">
+            <div class="stat-item fade-up">
+                <span class="stat-number" data-target="5000">0</span><span class="stat-suffix">+</span>
+                <span class="stat-label">Healthcare Providers</span>
+            </div>
+            <div class="stat-item fade-up delay-100">
+                <span class="stat-number" data-target="2">0</span><span class="stat-suffix">M+</span>
+                <span class="stat-label">Patient Records</span>
+            </div>
+            <div class="stat-item fade-up delay-200">
+                <span class="stat-number" data-target="99">0</span><span class="stat-suffix">.9%</span>
+                <span class="stat-label">Uptime SLA</span>
+            </div>
+            <div class="stat-item fade-up delay-300">
+                <span class="stat-number" data-target="40">0</span><span class="stat-suffix">%</span>
+                <span class="stat-label">Time Saved</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-header fade-up">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Comprehensive Clinical Tools</h2>
+                <p class="section-desc">Our suite of specialized tools is built to minimize administrative burden so you
+                    can focus on what matters - patient care.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-up">
+                    <div class="feature-img-wrap">
+                        <img alt="Patient Records Management - Secure digital health records interface with patient history and allergic profiles"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAzSSb9cZ4s4UUR-FsXexBMeZdbRd0ThNBrx3wF0SCSj5-QgqVnmuYclMuZ8TfjdgzGXm1RWFvJuogluWtdZk9JawuuX0uiWVsJIw7CcarUXrMTp332Mdgb52PqRHmrQpaRzIPIdfpNMJCHwdFY9qpxGvzVaisdzLIHjZUYZ1j1z19OKSuLv5f2N5NO-l4XrFGMrDvUunZzTgZsHl2DPjK3AcTHXW5GB7PHaiSPF1tLV9P_nZaluyFPTfjR_l2b5EQ3fWT0tK9ylA" />
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-icon-badge">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1;">folder_shared</span>
+                        </div>
+                        <h3>Patient Records</h3>
+                        <p>Securely manage digital health records, history, and allergic profile in a centralized,
+                            searchable vault with role-based access.</p>
+                    </div>
+                </div>
+                <div class="feature-card fade-up delay-100">
+                    <div class="feature-img-wrap">
+                        <img alt="Digital Prescriptions - Smart prescription generation and sharing interface"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-qkfG6xVtkiof_eyMVSpKqiS85NdY41aSJPuAHcWG5RClLm4HkVKK-xEtHtGEQ0MNL3EOqXCu4Cz_kAre20ibPex3_Km8_YmRgtow4QufcwqfyXAniabMqgw_u3QgAvpxsMzLg9aLkY9AN9HO-Sk8oCuiL0ZULd-OAN4-Gkj1sre31rmDL4PAE_ewS--tVPKsxcGwbDa6x-5tluj0tKqnaUnxYHniUhJnO7EuGwApEtp94i8PKaHm3JR4ZVd8ZK7OG8p7TyqyLz0" />
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-icon-badge">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1;">medication</span>
+                        </div>
+                        <h3>Digital Prescriptions</h3>
+                        <p>Generate and share smart prescriptions instantly via secure patient portals or email with
+                            automated drug interaction checks.</p>
+                    </div>
+                </div>
+                <div class="feature-card fade-up delay-200">
+                    <div class="feature-img-wrap">
+                        <img alt="Clinic Billing Dashboard - Automated invoicing and financial analytics"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL8L9HPiLoTdJc21tNPsbwlzXwG3i28Kl9XFKlllzNevNk1dkdSXUi0Z2n3s7npXwJaOpliKVdt0ESpPhWqkif2VgLykOdSY88pLACGAlGb6GgysSxJMGNfd6-EdnMmtOkZDjyIOAk9gjMgPgpOCBj6KTERFK0CRBSkk4o6hkR7tUCsId4u0UdgJtLAYzbjJVkdRQHc5jW-qayeM_iDuXpql94zHe4Pzw5AFjR-ZaD4JwCwR8ww_JkhMZD0AS_NEzgZhEZkphoDpc" />
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-icon-badge">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1;">receipt_long</span>
+                        </div>
+                        <h3>Clinic Billing</h3>
+                        <p>Automated invoicing and financial analytics to track your clinic's fiscal health with
+                            real-time revenue dashboards.</p>
+                    </div>
+                </div>
+                <div class="feature-card fade-up delay-300">
+                    <div class="feature-img-wrap">
+                        <img alt="Appointment Management - Smart scheduling calendar with queue tracking"
+                            src="images/appointment-feature.png" />
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-icon-badge">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1;">calendar_month</span>
+                        </div>
+                        <h3>Appointment Management</h3>
+                        <p>Smart scheduling and queue tracking for efficient patient flow, reduced wait times, and
+                            automated reminders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header fade-up">
+                <span class="section-badge">Getting Started</span>
+                <h2 class="section-title">Simplicity in Every Step</h2>
+                <p class="section-desc">We designed DocScribe to be intuitive from day one. No extensive training
+                    required - just pure efficiency.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card fade-up">
+                    <div class="step-number">1</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings:'FILL' 1;">person_add</span>
+                    </div>
+                    <h3>Sign Up</h3>
+                    <p>Create your clinic profile in minutes with our guided setup wizard. Import existing data
+                        seamlessly.</p>
+                </div>
+                <div class="step-connector fade-up delay-100">
+                    <svg width="80" height="2" viewBox="0 0 80 2">
+                        <line x1="0" y1="1" x2="80" y2="1" stroke="#c8bfff" stroke-width="2" stroke-dasharray="6 4" />
+                    </svg>
+                </div>
+                <div class="step-card fade-up delay-100">
+                    <div class="step-number">2</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings:'FILL' 1;">group_add</span>
+                    </div>
+                    <h3>Manage Patients</h3>
+                    <p>Add records and schedule appointments seamlessly using our smart grid and intelligent search.</p>
+                </div>
+                <div class="step-connector fade-up delay-200">
+                    <svg width="80" height="2" viewBox="0 0 80 2">
+                        <line x1="0" y1="1" x2="80" y2="1" stroke="#c8bfff" stroke-width="2" stroke-dasharray="6 4" />
+                    </svg>
+                </div>
+                <div class="step-card fade-up delay-200">
+                    <div class="step-number">3</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings:'FILL' 1;">description</span>
+                    </div>
+                    <h3>Generate Documents</h3>
+                    <p>Print prescriptions and invoices with one click, fully customized for your brand identity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Preview Section -->
+    <section class="section preview" id="preview">
+        <div class="container">
+            <div class="section-header fade-up">
+                <span class="section-badge">Product Preview</span>
+                <h2 class="section-title">Experience the Future of Clinic Management</h2>
+                <p class="section-desc">A clean, focused interface that respects the gravity of your work and the value
+                    of your time.</p>
+            </div>
+            <div class="preview-browser fade-up delay-100">
+                <div class="browser-chrome">
+                    <div class="browser-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <div class="browser-actions">
+                        <span class="material-symbols-outlined" style="font-size:16px;">remove</span>
+                        <span class="material-symbols-outlined" style="font-size:16px;">crop_square</span>
+                        <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+                    </div>
+                </div>
+                <div class="browser-body">
+                    <div class="preview-sidebar">
+                        <div class="sidebar-logo">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings:'FILL' 1; color:#5E4AD1;">ecg_heart</span>
+                            <span>DocScribe</span>
+                        </div>
+                        <div class="sidebar-nav">
+                            <div class="sidebar-item active">
+                                <span class="material-symbols-outlined">dashboard</span> Dashboard
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="material-symbols-outlined">group</span> Patients
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="material-symbols-outlined">calendar_month</span> Schedule
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="material-symbols-outlined">receipt_long</span> Billing
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="material-symbols-outlined">bar_chart</span> Reports
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview-main">
+                        <div class="preview-images-grid">
+                            <img alt="Healthcare scheduling dashboard with patient queue, appointment cards, and flow metrics visualization"
+                                src="images/dashboard-preview-1.png" />
+                            <img alt="Electronic health record detail view with patient profile, prescription form, and vitals summary"
+                                src="images/ehr-preview-2.png" />
+                        </div>
+                        <div class="preview-analytics-bar">
+                            <span class="material-symbols-outlined" style="color:#5E4AD1;">analytics</span>
+                            <span>Interactive Analytics Panel - Real-time clinic performance metrics</span>
+                            <div class="analytics-mini-bars">
+                                <div class="mini-bar" style="height:60%"></div>
+                                <div class="mini-bar" style="height:85%"></div>
+                                <div class="mini-bar" style="height:45%"></div>
+                                <div class="mini-bar" style="height:70%"></div>
+                                <div class="mini-bar" style="height:90%"></div>
+                                <div class="mini-bar" style="height:55%"></div>
+                                <div class="mini-bar" style="height:75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header fade-up">
+                <span class="section-badge">Testimonials</span>
+                <h2 class="section-title">Trusted by Doctors Across India</h2>
+                <p class="section-desc">Hear from healthcare professionals who have transformed their practice with
+                    DocScribe.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-up">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"DocScribe has completely changed how I run my clinic. Prescriptions that used to take 10 minutes
+                        now take seconds, and my staff loves the Hindi language support. It's built for the way we
+                        actually
+                        work in India."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RS</div>
+                        <div>
+                            <strong>Dr. Rajesh Sharma</strong>
+                            <span>General Physician, Delhi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-up delay-100">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"The multi-language support is a game changer. My staff can document in their preferred language
+                        and the tool alone saved us ₹40,000 in administrative costs in the first month. Outstanding
+                        product!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">GS</div>
+                        <div>
+                            <strong>Dr. Gurpreet Singh</strong>
+                            <span>Paediatrician, Amritsar</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-up delay-200">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Being able to document patient notes in my local language is incredibly empowering. The
+                        appointment system also reduced our no-show rate by 35%. DocScribe truly understands the Indian
+                        healthcare ecosystem."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PK</div>
+                        <div>
+                            <strong>Dr. Priya Kumar</strong>
+                            <span>Gynaecologist, Chennai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-card fade-up">
+                <div class="cta-bg-effects">
+                    <div class="cta-orb cta-orb-1"></div>
+                    <div class="cta-orb cta-orb-2"></div>
+                </div>
+                <div class="cta-content">
+                    <h2>Ready to streamline your clinic?</h2>
+                    <p>Join thousands of healthcare providers who trust DocScribe for their daily operations. Start your
+                        free trial today.</p>
+                    <div class="cta-buttons">
+                        <a class="btn-primary btn-white" href="https://docscribe-eta.vercel.app/">
+                            Get Started - Try Demo
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-brand footer-logo">
+                    <span class="material-symbols-outlined brand-icon"
+                        style="font-variation-settings:'FILL' 1;">ecg_heart</span>
+                    DocScribe
+                </a>
+                <p>Modern medical documentation for the clinics of tomorrow. Secure, fast, and beautifully designed.</p>
+            </div>
+            <div class="footer-links-group">
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="#preview">Product Preview</a>
+                <a href="https://docscribe-eta.vercel.app/">Try Demo</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact Support</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">HIPAA Compliance</a>
+                <a href="#">Security</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <p>© 2026 DocScribe, powered by Clinsight. All rights reserved.</p>
+                <div class="footer-social">
+                    <span class="material-symbols-outlined">language</span>
+                    <span class="material-symbols-outlined">shield</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
