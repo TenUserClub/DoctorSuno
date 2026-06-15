@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoctorSuno Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@400,1,0,24" rel="stylesheet" />
+    <link rel="stylesheet" href="/app/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span class="material-symbols-outlined logo-icon">draw</span>
+                <h2>DoctorSuno</h2>
+            </div>
+            
+            <div class="doctor-profile">
+                <img src="https://ui-avatars.com/api/?name=Dr&background=5E4AD1&color=fff&rounded=true" alt="Doctor Profile" class="doc-avatar">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="dashboard-view">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" data-target="patients-view">
+                    <span class="material-symbols-outlined">group</span>
+                    Patients
+                </a>
+                <a href="#" class="nav-item" data-target="reports-view">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    Reports
+                </a>
+                <a href="#" class="nav-item" data-target="settings-view">
+                    <span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+                <a href="#" class="nav-item" data-target="scribe-view">
+                    <span class="material-symbols-outlined">mic</span>
+                    Scribe
+                </a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="../index.html" class="nav-item">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Back to Home
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn"><span class="material-symbols-outlined">grid_view</span></button>
+                    <button class="icon-btn notification-btn">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="badge">3</span>
+                    </button>
+                    <div class="user-menu">
+                        <img src="https://ui-avatars.com/api/?name=Me&background=e5deff&color=5e4ad1&rounded=true" alt="User Avatar" class="user-avatar">
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view-section active">
+                <div class="dashboard-grid">
+                <!-- Left Column (Metrics & Chart & History) -->
+                <div class="main-column">
+                    <!-- Metrics Row -->
+                    <div class="metrics-row">
+                        <!-- Patients Seen -->
+                        <div class="metric-card primary-card">
+                            <div class="metric-header">
+                                <h3>Patients Seen</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="metric-value">2,614</div>
+                            <div class="metric-footer">
+                                <span class="label">Patients Seen</span>
+                                <span class="trend positive">+12.5%</span>
+                            </div>
+                        </div>
+
+                        <!-- Pending Reports -->
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3>Pending Reports</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="metric-value dark-text">35</div>
+                            <div class="metric-footer">
+                                <span class="label">Pending Reports</span>
+                                <span class="trend warning">+8.6%</span>
+                            </div>
+                        </div>
+
+                        <!-- Efficiency Score -->
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3>Efficiency Score</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="gauge-container">
+                                <canvas id="efficiencyChart"></canvas>
+                                <div class="gauge-value">90</div>
+                            </div>
+                            <div class="metric-footer center">
+                                <span class="label">Efficiency</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Section -->
+                    <div class="chart-section card">
+                        <div class="card-header">
+                            <h2>Patient Chart</h2>
+                            <button class="btn-primary-sm">
+                                <span class="material-symbols-outlined">add</span>
+                                Patient Chart
+                            </button>
+                        </div>
+                        <div class="chart-controls">
+                            <h3>Vitals</h3>
+                            <div class="chart-legend">
+                                <span class="legend-item"><span class="dot blue"></span> Vitals</span>
+                                <span class="legend-item"><span class="dot light-blue"></span> Mapping</span>
+                                <span class="legend-item"><span class="dot yellow"></span> BP</span>
+                                <span class="legend-item"><span class="dot grey"></span> HR</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="vitalsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="history-section card">
+                        <div class="card-header">
+                            <h2>History</h2>
+                        </div>
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Last Visit</th>
+                                    <th>Vitals</th>
+                                    <th>Last Lab/Imund</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Arjun Sharma</td>
+                                    <td>10:00 AM • 02 Jun</td>
+                                    <td>148</td>
+                                    <td>5 mins ago</td>
+                                    <td><span class="status-badge overdue">⚠ Overdue</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Priya Patel</td>
+                                    <td>11:00 AM • 01 Jun</td>
+                                    <td>132</td>
+                                    <td>6 mins ago</td>
+                                    <td><span class="status-badge overdue">⚠ Overdue</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Vikram Singh</td>
+                                    <td>9:00 AM • 31 May</td>
+                                    <td>125</td>
+                                    <td>2 days ago</td>
+                                    <td><span class="status-badge completed">✓ Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Column (Appointments & Tasks) -->
+                <div class="side-column">
+                    <!-- Upcoming Appointments -->
+                    <div class="appointments-section">
+                        <div class="section-header">
+                            <h3>Upcoming Appointments</h3>
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </div>
+                        <div class="appointment-list">
+                            <div class="appointment-card active">
+                                <img src="https://ui-avatars.com/api/?name=Ananya+Desai&background=random&rounded=true" alt="Ananya Desai" class="appt-avatar">
+                                <div class="appt-info">
+                                    <h4>Ananya Desai</h4>
+                                    <p>10:00 AM • Today</p>
+                                </div>
+                                <span class="material-symbols-outlined arrow">chevron_right</span>
+                            </div>
+                            <div class="appointment-card">
+                                <img src="https://ui-avatars.com/api/?name=Rahul+Verma&background=random&rounded=true" alt="Rahul Verma" class="appt-avatar">
+                                <div class="appt-info">
+                                    <h4>Rahul Verma</h4>
+                                    <p>11:30 AM • Today</p>
+                                </div>
+                            </div>
+                            <div class="appointment-card">
+                                <img src="https://ui-avatars.com/api/?name=Neha+Gupta&background=random&rounded=true" alt="Neha Gupta" class="appt-avatar">
+                                <div class="appt-info">
+                                    <h4>Neha Gupta</h4>
+                                    <p>02:00 PM • Today</p>
+                                </div>
+                            </div>
+                            <div class="appointment-card">
+                                <img src="https://ui-avatars.com/api/?name=Kavita+Reddy&background=random&rounded=true" alt="Kavita Reddy" class="appt-avatar">
+                                <div class="appt-info">
+                                    <h4>Kavita Reddy</h4>
+                                    <p>04:30 PM • Today</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tasks -->
+                    <div class="tasks-section">
+                        <div class="section-header">
+                            <h3>Tasks</h3>
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </div>
+                        <div class="task-list">
+                            <label class="task-item">
+                                <input type="checkbox" checked>
+                                <div class="task-content">
+                                    <h4>Update OPD report</h4>
+                                    <p>15 mins ago</p>
+                                </div>
+                                <span class="dot yellow"></span>
+                            </label>
+                            <label class="task-item">
+                                <input type="checkbox">
+                                <div class="task-content">
+                                    <h4>Schedule appointment</h4>
+                                    <p>30 mins ago</p>
+                                </div>
+                                <span class="dot light-blue"></span>
+                            </label>
+                            <label class="task-item">
+                                <input type="checkbox">
+                                <div class="task-content">
+                                    <h4>Upload lab reports</h4>
+                                    <p>1 hour ago</p>
+                                </div>
+                                <span class="dot red"></span>
+                            </label>
+                            <label class="task-item">
+                                <input type="checkbox">
+                                <div class="task-content">
+                                    <h4>View Nomination</h4>
+                                    <p>10 Nov, 4pm</p>
+                                </div>
+                                <span class="dot grey"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Other Views (Placeholders) -->
+            <div id="patients-view" class="view-section" style="display: none; padding: 2rem;">
+                <h2>Patients Directory</h2>
+                <p>Functional view coming soon.</p>
+            </div>
+            <div id="reports-view" class="view-section" style="display: none; padding: 2rem;">
+                <h2>Analytics & Reports</h2>
+                <p>Functional view coming soon.</p>
+            </div>
+            <div id="settings-view" class="view-section" style="display: none; padding: 2rem;">
+                <h2>Clinic Settings</h2>
+                <p>Functional view coming soon.</p>
+            </div>
+
+            <!-- Scribe View -->
+            <div id="scribe-view" class="view-section" style="display: none; height: 100%;">
+                <iframe src="https://docscribe-eta.vercel.app/" allow="microphone; clipboard-read; clipboard-write" style="width: 100%; height: calc(100vh - 120px); border: none; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);"></iframe>
+            </div>
+        </main>
+    </div>
+    <script src="/app/script.js"></script>
+</body>
+</html>
