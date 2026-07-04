@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoctorSuno Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@400,1,0,24" rel="stylesheet" />
+    <link rel="stylesheet" href="/demo/style.css">
+    <link rel="stylesheet" href="/demo/scribe.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span class="material-symbols-outlined logo-icon" style="font-variation-settings:'FILL' 1;">ecg_heart</span>
+                <h2>DoctorSuno</h2>
+            </div>
+            
+            <div class="doctor-profile">
+                <img src="https://ui-avatars.com/api/?name=Dr&background=5E4AD1&color=fff&rounded=true" alt="Doctor Profile" class="doc-avatar">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="dashboard-view">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" data-target="patients-view">
+                    <span class="material-symbols-outlined">group</span>
+                    Patients
+                </a>
+                <a href="#" class="nav-item" data-target="reports-view">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    Reports
+                </a>
+                <a href="#" class="nav-item" data-target="settings-view">
+                    <span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+                <a href="#" class="nav-item" data-target="scribe-view">
+                    <span class="material-symbols-outlined">mic</span>
+                    Scribe
+                </a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="../index.html" class="nav-item">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Back to Home
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn"><span class="material-symbols-outlined">grid_view</span></button>
+                    <button class="icon-btn notification-btn" id="btn-notifications">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="badge">3</span>
+                    </button>
+                    <div class="dropdown-menu" id="dropdown-notifications">
+                        <div class="dropdown-header">Notifications</div>
+                        <div class="dropdown-item">New lab result for Arjun</div>
+                        <div class="dropdown-item">Dr. Sarah updated schedule</div>
+                    </div>
+                    <div class="user-menu" id="btn-user-menu">
+                        <img src="https://ui-avatars.com/api/?name=Me&background=e5deff&color=5e4ad1&rounded=true" alt="User Avatar" class="user-avatar">
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-user">
+                        <div class="dropdown-item">Profile</div>
+                        <div class="dropdown-item">Settings</div>
+                        <div class="dropdown-item">Log out</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view-section active">
+                <div class="dashboard-grid">
+                <!-- Left Column (Metrics & Chart & History) -->
+                <div class="main-column">
+                    <!-- Metrics Row -->
+                    <div class="metrics-row">
+                        <!-- Patients Seen -->
+                        <div class="metric-card primary-card">
+                            <div class="metric-header">
+                                <h3>Patients Seen</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="metric-value">
+                                <span id="patients-seen-value">2,614</span>
+                                <div style="width: 80px; height: 30px; margin-left: auto;">
+                                    <canvas id="patientsSeenSparkline"></canvas>
+                                </div>
+                            </div>
+                            <div class="metric-footer">
+                                <span class="label">Patients Seen</span>
+                                <span class="trend positive">+12.5%</span>
+                            </div>
+                        </div>
+
+                        <!-- Pending Reports -->
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3>Pending Reports</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="metric-value dark-text">35</div>
+                            <div class="metric-footer">
+                                <span class="label">Pending Reports</span>
+                                <span class="trend warning">+8.6%</span>
+                            </div>
+                        </div>
+
+                        <!-- Efficiency Score -->
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3>Efficiency Score</h3>
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </div>
+                            <div class="gauge-container">
+                                <canvas id="efficiencyChart"></canvas>
+
+                            </div>
+                            <div class="metric-footer center">
+                                <span class="label">Efficiency</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Section -->
+                    <div class="chart-section card">
+                        <div class="card-header">
+                            <h2>Patient Chart</h2>
+                            <button class="btn-primary-sm">
+                                <span class="material-symbols-outlined">add</span>
+                                Patient Chart
+                            </button>
+                        </div>
+                        <div class="chart-controls">
+                            <h3>Vitals</h3>
+                            <select id="vitalsTimeFilter" class="chart-filter">
+                                <option value="All">All</option>
+                                <option value="1M">1M</option>
+                                <option value="6M">6M</option>
+                            </select>
+                            <div class="chart-legend" style="margin-left: auto;">
+                                <span class="legend-item"><span class="dot blue"></span> Vitals</span>
+                                <span class="legend-item"><span class="dot light-blue"></span> Mapping</span>
+                                <span class="legend-item"><span class="dot yellow"></span> BP</span>
+                                <span class="legend-item"><span class="dot grey"></span> HR</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="vitalsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="history-section card">
+                        <div class="card-header">
+                            <h2>History</h2>
+                        </div>
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Last Visit</th>
+                                    <th>Vitals</th>
+                                    <th>Last Lab/Imund</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <!-- Dynamic rows will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Column (Appointments & Tasks) -->
+                <div class="side-column">
+                    <!-- Upcoming Appointments -->
+                    <div class="appointments-section">
+                        <div class="section-header">
+                            <h3>Upcoming Appointments</h3>
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </div>
+                        <div class="appointment-list" id="appointments-list-container">
+                            <!-- Dynamic appointments will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Tasks -->
+                    <div class="tasks-section">
+                        <div class="section-header">
+                            <h3>Tasks</h3>
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </div>
+                        <div class="task-list" id="tasks-list-container">
+                            <!-- Dynamic tasks will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Patients View -->
+            <div id="patients-view" class="view-section" style="display: none;">
+                <div class="card" style="margin: 24px;">
+                    <div class="card-header">
+                        <h2>Patients Directory</h2>
+                        <button class="btn-primary-sm" id="btn-add-patient">
+                            <span class="material-symbols-outlined">add</span>
+                            Add Patient
+                        </button>
+                    </div>
+                    <div class="table-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div class="search-bar" style="width: 300px; border: 1px solid var(--grey);">
+                            <span class="material-symbols-outlined">search</span>
+                            <input type="text" id="patients-search" placeholder="Search patients...">
+                        </div>
+                        <select id="patients-filter" class="chart-filter">
+                            <option value="All">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                    </div>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Last Visit</th>
+                                <th>Vitals</th>
+                                <th>Last Lab</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patients-directory-body">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports View -->
+            <div id="reports-view" class="view-section" style="display: none; padding: 2rem;">
+                <h2>Analytics & Reports</h2>
+                <p>Functional view coming soon.</p>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settings-view" class="view-section" style="display: none;">
+                <div class="dashboard-grid" style="padding: 24px;">
+                    <div class="main-column">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Clinic Profile</h2>
+                                <button class="btn-primary-sm">Save Changes</button>
+                            </div>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Clinic Name</label>
+                                    <input type="text" class="form-control" value="DoctorSuno Primary Care">
+                                </div>
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" value="123 Health Ave, Medical District">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Email</label>
+                                    <input type="email" class="form-control" value="contact@doctorsuno.com">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="side-column">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Staff Management</h2>
+                                <button class="btn-primary-sm" id="btn-add-staff">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                            <div class="staff-list" id="staff-list-container">
+                                <!-- Dynamic staff -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scribe View (native — integrated docscribe) -->
+            <div id="scribe-view" class="view-section" style="display: none;">
+                <div class="scribe-grid">
+                    <!-- Recorder Card -->
+                    <div class="card scribe-recorder-card">
+                        <div class="scribe-card-header">
+                            <h2>Consultation Scribe</h2>
+                            <p>Capture your patient conversation seamlessly</p>
+                        </div>
+
+                        <div class="scribe-mic-area">
+                            <div class="scribe-ping" id="scribe-ping" hidden></div>
+                            <button id="scribe-record-btn" class="scribe-mic-btn" title="Start recording">
+                                <span class="material-symbols-outlined">mic</span>
+                            </button>
+                        </div>
+
+                        <div class="scribe-timer" id="scribe-timer" hidden>00:00</div>
+                        <p class="scribe-hint" id="scribe-hint">Tap the mic to start your session</p>
+
+                        <div class="scribe-live-controls" id="scribe-live-controls" hidden>
+                            <button id="scribe-pause-btn" class="scribe-chip-btn">
+                                <span class="material-symbols-outlined">pause</span>
+                                <span id="scribe-pause-label">Pause</span>
+                            </button>
+                        </div>
+
+                        <!-- Preview state (after stop / upload) -->
+                        <div class="scribe-preview" id="scribe-preview" hidden>
+                            <audio id="scribe-audio-preview" controls></audio>
+                            <div class="scribe-preview-actions">
+                                <button id="scribe-process-btn" class="btn-primary-sm">
+                                    <span class="material-symbols-outlined">auto_awesome</span>
+                                    Generate Summary
+                                </button>
+                                <button id="scribe-discard-btn" class="scribe-chip-btn danger">
+                                    <span class="material-symbols-outlined">delete</span>
+                                    Discard
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="scribe-divider"><span>OR</span></div>
+
+                        <input type="file" id="scribe-upload" accept="audio/*" hidden>
+                        <label for="scribe-upload" class="scribe-upload-btn">
+                            <span class="material-symbols-outlined">upload</span>
+                            Upload Consultation Audio
+                        </label>
+
+                        <div class="scribe-privacy">
+                            <span class="material-symbols-outlined">lock</span>
+                            Ensure patient consent before recording or sharing
+                        </div>
+                    </div>
+
+                    <!-- Summary Card -->
+                    <div class="card scribe-summary-card">
+                        <div class="scribe-card-header row">
+                            <div>
+                                <h2>Medical Highlights</h2>
+                                <p>AI-distilled insights from your consultation</p>
+                            </div>
+                            <button id="scribe-copy-btn" class="scribe-chip-btn" hidden>
+                                <span class="material-symbols-outlined">content_copy</span>
+                                <span id="scribe-copy-label">Copy</span>
+                            </button>
+                        </div>
+
+                        <!-- Idle -->
+                        <div id="scribe-summary-idle" class="scribe-empty">
+                            <span class="material-symbols-outlined">clinical_notes</span>
+                            <p>No active session. Start a recording or upload audio to see findings here.</p>
+                        </div>
+
+                        <!-- Processing -->
+                        <div id="scribe-summary-processing" hidden>
+                            <div class="scribe-processing-label">
+                                <div class="scribe-spinner"></div>
+                                Synthesizing clinical notes...
+                            </div>
+                            <div class="scribe-skeleton"></div>
+                            <div class="scribe-skeleton"></div>
+                            <div class="scribe-skeleton"></div>
+                        </div>
+
+                        <!-- Error -->
+                        <div id="scribe-summary-error" class="scribe-error" hidden>
+                            <span class="material-symbols-outlined">error</span>
+                            <p id="scribe-error-text">Something went wrong while processing.</p>
+                            <button id="scribe-retry-btn" class="btn-primary-sm">
+                                <span class="material-symbols-outlined">refresh</span>
+                                Try Again
+                            </button>
+                        </div>
+
+                        <!-- Ready -->
+                        <div id="scribe-summary-ready" hidden>
+                            <div id="scribe-details" class="scribe-details" hidden></div>
+                            <div id="scribe-sections" class="scribe-sections"></div>
+
+                            <details class="scribe-transcript" id="scribe-transcript-wrap" hidden>
+                                <summary>
+                                    <span class="material-symbols-outlined">description</span>
+                                    View Full Transcript
+                                </summary>
+                                <p id="scribe-transcript"></p>
+                            </details>
+
+                            <div class="scribe-share">
+                                <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
+                                <div class="scribe-share-row">
+                                    <input type="email" id="scribe-email" class="form-control" placeholder="Patient's Email Address">
+                                    <button id="scribe-send-btn" class="btn-primary-sm">Send via Email</button>
+                                </div>
+                                <p class="scribe-share-error" id="scribe-share-error" hidden></p>
+
+                                <div class="scribe-print-wrap" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(94, 74, 209, 0.15);">
+                                    <button id="scribe-print-btn" class="scribe-chip-btn" style="width: 100%; justify-content: center; gap: 8px;">
+                                        <span class="material-symbols-outlined">print</span>
+                                        Print Consultation Summary
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p class="scribe-consent-note">This summary was generated automatically. Please review before sharing with the patient.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="patient-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Patient</h2>
+                <button class="icon-btn close-modal"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <form id="form-add-patient">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="p-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Visit</label>
+                    <input type="text" id="p-visit" class="form-control" placeholder="e.g. 10:00 AM • Today" required>
+                </div>
+                <div class="form-group">
+                    <label>Vitals (HR)</label>
+                    <input type="number" id="p-vitals" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="p-status" class="form-control">
+                        <option value="completed">Completed</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary-sm" style="width: 100%; justify-content: center; margin-top: 16px;">Add Patient</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="staff-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Staff Member</h2>
+                <button class="icon-btn close-modal"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <form id="form-add-staff">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="s-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <input type="text" id="s-role" class="form-control" required>
+                </div>
+                <button type="submit" class="btn-primary-sm" style="width: 100%; justify-content: center; margin-top: 16px;">Add Staff</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="chartjs-tooltip"></div>
+    <script src="/demo/script.js"></script>
+    <script src="/demo/scribe.js"></script>
+</body>
+</html>

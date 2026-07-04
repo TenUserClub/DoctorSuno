@@ -1,0 +1,210 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Doctor Backend",
+    "version": "1.1.0",
+    "description": "AI-powered medical scribe backend for transcription and Email (Mailgun) delivery."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local development"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Welcome message",
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "service": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/consultation/process": {
+      "post": {
+        "summary": "Transcribe audio and extract medical summary",
+        "tags": [
+          "Consultation"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "audioBlob"
+                ],
+                "properties": {
+                  "audioBlob": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Audio file (mp3, wav, m4a, etc.)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "actualTranscript": {
+                          "type": "string"
+                        },
+                        "summary": {
+                          "$ref": "#/components/schemas/MedicalSummary"
+                        },
+                        "formattedSummary": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/consultation/send": {
+      "post": {
+        "summary": "Send summary via Email (Mailgun)",
+        "tags": [
+          "Consultation"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "summary"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "patient@example.com"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "The text summary to send (e.g. the formattedSummary from /process)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "mailgunLog": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MedicalSummary": {
+        "type": "object",
+        "properties": {
+          "symptoms": {
+            "type": "string"
+          },
+          "diagnosis": {
+            "type": "string"
+          },
+          "prescription": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

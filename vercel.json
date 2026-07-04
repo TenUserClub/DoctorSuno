@@ -1,4 +1,10 @@
 {
   "buildCommand": "",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/health", "destination": "/api/index" },
+    { "source": "/api-docs", "destination": "/api/index" },
+    { "source": "/api-docs/:path*", "destination": "/api/index" }
+  ]
 }
