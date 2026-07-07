@@ -18,6 +18,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- Sidebar mobile backdrop -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -64,6 +67,9 @@
         <main class="main-content">
             <!-- Header -->
             <header class="top-header">
+                <button class="hamburger-menu-btn" id="btn-sidebar-toggle" aria-label="Toggle Navigation">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
                 <div class="search-bar">
                     <span class="material-symbols-outlined">search</span>
                     <input type="text" placeholder="Search">

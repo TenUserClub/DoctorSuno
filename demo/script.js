@@ -512,5 +512,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('active'));
     });
 
+    // Mobile Sidebar Drawer Toggle Logic
+    const btnToggle = document.getElementById('btn-sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    
+    if (btnToggle && sidebar && backdrop) {
+        const toggleDrawer = (open) => {
+            sidebar.classList.toggle('drawer-open', open);
+            backdrop.classList.toggle('active', open);
+        };
+        
+        btnToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDrawer(!sidebar.classList.contains('drawer-open'));
+        });
+        
+        backdrop.addEventListener('click', () => toggleDrawer(false));
+        
+        // Auto-close on nav clicks
+        sidebar.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => toggleDrawer(false));
+        });
+    }
+
     // Scribing Feature is now handled via iframe.
 });
