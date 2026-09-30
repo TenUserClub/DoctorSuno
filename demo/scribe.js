@@ -46,7 +46,7 @@
         "scribe-summary-idle", "scribe-summary-processing", "scribe-summary-error",
         "scribe-error-text", "scribe-retry-btn", "scribe-summary-ready",
         "scribe-details", "scribe-sections", "scribe-transcript-wrap", "scribe-transcript",
-        "scribe-email", "scribe-send-btn", "scribe-share-error", "scribe-print-btn",
+        "scribe-send-btn", "scribe-share-error", "scribe-share-success", "scribe-print-btn",
     ];
 
     // ---------------------------------------------------------------------
@@ -198,6 +198,7 @@
         els["scribe-transcript-wrap"].hidden = !t;
         els["scribe-transcript"].textContent = t;
         els["scribe-share-error"].hidden = true;
+        els["scribe-share-success"].hidden = true;
         showPanel("ready");
     }
 
@@ -409,43 +410,32 @@
             showShareError("Please select at least one section to send.");
             return;
         }
-        const email = els["scribe-email"].value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showShareError("Please enter a valid email address.");
-            return;
-        }
         showShareError("");
+        els["scribe-share-success"].hidden = true;
 
-        const { text, html } = buildFilteredContent();
+        const { text } = buildFilteredContent();
         if (!text) return;
 
         const btn = els["scribe-send-btn"];
+        const label = btn.querySelector(".scribe-send-label");
         btn.disabled = true;
-        btn.textContent = "Sending...";
+        label.textContent = "Sending...";
 
-        try {
-            const response = await fetch(`${apiBase()}/api/consultation/send`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, summary: text, summaryHtml: html }),
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error || `Server responded with ${response.status}`);
-            }
-            btn.textContent = "✓ Sent";
-            btn.classList.add("sent");
-            setTimeout(() => {
-                btn.textContent = "Send via Email";
-                btn.classList.remove("sent");
-                btn.disabled = false;
-            }, 3000);
-        } catch (err) {
-            console.error("Failed to send email:", err);
-            showShareError("Failed to send email. Please try again.");
-            btn.textContent = "Send via Email";
+        // TODO: demo mock — replace with POST ${apiBase()}/api/consultation/send
+        // ({ email, summary: text, summaryHtml: html }) once email delivery is live,
+        // using the patient's email from their record.
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        const success = els["scribe-share-success"];
+        success.textContent = "Consultation summary has been emailed to the patient.";
+        success.hidden = false;
+        label.textContent = "Sent";
+        btn.classList.add("sent");
+        setTimeout(() => {
+            label.textContent = "Send via Email";
+            btn.classList.remove("sent");
             btn.disabled = false;
-        }
+        }, 3000);
     }
 
     async function copySummary() {
@@ -534,8 +524,18 @@
         // Upload
         els["scribe-upload"].addEventListener("change", (e) => {
             const file = e.target.files && e.target.files[0];
-            if (file) enterPreview(file);
             e.target.value = "";
+            if (!file) return;
+            if (!/\.(mp3|wav|m4a|ogg|webm|flac)$/i.test(file.name)) {
+                state.audioBlob = null;
+                state.status = "error";
+                els["scribe-error-text"].textContent =
+                    "Please upload an audio file (MP3, WAV, M4A, OGG, WebM or FLAC).";
+                renderRecorder();
+                showPanel("error");
+                return;
+            }
+            enterPreview(file);
         });
 
         // Section interactions (event delegation)

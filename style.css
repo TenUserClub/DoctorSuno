@@ -103,8 +103,7 @@ a{text-decoration:none;color:inherit}
 .feature-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(201,196,214,0.2);transition:all .35s;position:relative}
 .feature-card:hover{border-color:rgba(94,74,209,0.25)}
 .feature-img-wrap{height:200px;overflow:hidden;background:var(--surface-low)}
-.feature-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.feature-card:hover .feature-img-wrap img{transform:scale(1.05)}
+.feature-img-wrap img{width:100%;height:100%;object-fit:cover}
 .feature-content{padding:24px}
 .feature-icon-badge{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .feature-icon-badge .material-symbols-outlined{font-size:20px;color:var(--primary)}

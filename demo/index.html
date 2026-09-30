@@ -353,7 +353,7 @@
 
                         <div class="scribe-divider"><span>OR</span></div>
 
-                        <input type="file" id="scribe-upload" accept="audio/*" hidden>
+                        <input type="file" id="scribe-upload" accept=".mp3,.wav,.m4a,.ogg,.webm,.flac" hidden>
                         <label for="scribe-upload" class="btn-secondary">
                             <span class="material-symbols-outlined">upload</span>
                             Upload Consultation Audio
@@ -419,14 +419,13 @@
                             </details>
 
                             <div class="scribe-share">
-                                <div hidden>
-                                    <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
-                                    <div class="scribe-share-row">
-                                        <input type="email" id="scribe-email" class="form-control" placeholder="Patient's Email Address">
-                                        <button id="scribe-send-btn" class="btn-primary-sm">Send via Email</button>
-                                    </div>
-                                    <p class="scribe-share-error" id="scribe-share-error" hidden></p>
-                                </div>
+                                <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
+                                <button id="scribe-send-btn" class="btn-primary-sm scribe-send-btn">
+                                    <span class="material-symbols-outlined">send</span>
+                                    <span class="scribe-send-label">Send via Email</span>
+                                </button>
+                                <p class="scribe-share-error" id="scribe-share-error" hidden></p>
+                                <p class="scribe-share-success" id="scribe-share-success" role="status" hidden></p>
 
                                 <div class="scribe-print-wrap">
                                     <button id="scribe-print-btn" class="btn-secondary-sm" style="width: 100%;">

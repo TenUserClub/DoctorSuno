@@ -94,7 +94,6 @@
     font-variation-settings: 'FILL' 1;
 }
 
-.scribe-mic-btn:hover { transform: scale(1.04); }
 .scribe-mic-btn:active { transform: scale(0.96); }
 
 .scribe-mic-btn.recording {
@@ -257,7 +256,7 @@
     gap: 12px;
 }
 
-.scribe-error .material-symbols-outlined {
+.scribe-error > .material-symbols-outlined {
     font-size: 44px;
     color: var(--danger);
 }
@@ -490,28 +489,18 @@
 
 .scribe-share h3 .material-symbols-outlined { font-size: 18px; color: var(--primary); }
 
-.scribe-share-row {
-    display: flex;
-    gap: 12px;
-}
+.scribe-send-btn { width: 100%; }
+.scribe-send-btn.sent { background: #15803D; border-color: #15803D; opacity: 1; }
 
-.scribe-share-row .form-control { flex: 1; height: 44px; }
-
-.scribe-share-row .btn-primary-sm {
-    height: 44px;
-    white-space: nowrap;
-    justify-content: center;
-}
-
-.scribe-share-row .btn-primary-sm.sent { background: var(--success); }
-.scribe-share-row .btn-primary-sm:disabled { opacity: 0.6; cursor: not-allowed; }
-
-.scribe-share-error {
+.scribe-share-error,
+.scribe-share-success {
     margin-top: 10px;
-    color: var(--danger);
     font-size: 13px;
     font-weight: 500;
 }
+
+.scribe-share-error { color: var(--danger); }
+.scribe-share-success { color: #15803D; }
 
 .scribe-consent-note {
     margin-top: 20px;
@@ -527,6 +516,6 @@
     .scribe-recorder-card { position: static; }
 }
 
-@media (max-width: 640px) {
-    .scribe-share-row { flex-direction: column; }
+.scribe-print-wrap {
+    margin-top: 16px;
 }
