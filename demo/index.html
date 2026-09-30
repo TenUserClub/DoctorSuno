@@ -68,7 +68,7 @@
         <main class="main-content">
             <!-- Header -->
             <header class="top-header">
-                <button class="hamburger-menu-btn" id="btn-sidebar-toggle" aria-label="Toggle Navigation">
+                <button class="icon-btn hamburger-menu-btn" id="btn-sidebar-toggle" aria-label="Toggle Navigation">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
                 <div class="search-bar">
@@ -109,7 +109,6 @@
                         <div class="metric-card primary-card">
                             <div class="metric-header">
                                 <h3>Patients Seen</h3>
-                                <span class="material-symbols-outlined">more_vert</span>
                             </div>
                             <div class="metric-value">
                                 <span id="patients-seen-value">2,614</span>
@@ -127,7 +126,6 @@
                         <div class="metric-card">
                             <div class="metric-header">
                                 <h3>Pending Reports</h3>
-                                <span class="material-symbols-outlined">more_vert</span>
                             </div>
                             <div class="metric-value dark-text">35</div>
                             <div class="metric-footer">
@@ -140,7 +138,6 @@
                         <div class="metric-card">
                             <div class="metric-header">
                                 <h3>Efficiency Score</h3>
-                                <span class="material-symbols-outlined">more_vert</span>
                             </div>
                             <div class="gauge-container">
                                 <canvas id="efficiencyChart"></canvas>
@@ -208,7 +205,6 @@
                     <div class="appointments-section">
                         <div class="section-header">
                             <h3>Upcoming Appointments</h3>
-                            <span class="material-symbols-outlined">more_horiz</span>
                         </div>
                         <div class="appointment-list" id="appointments-list-container">
                             <!-- Dynamic appointments will be rendered here -->
@@ -219,7 +215,6 @@
                     <div class="tasks-section">
                         <div class="section-header">
                             <h3>Tasks</h3>
-                            <span class="material-symbols-outlined">more_horiz</span>
                         </div>
                         <div class="task-list" id="tasks-list-container">
                             <!-- Dynamic tasks will be rendered here -->
@@ -359,7 +354,7 @@
                         <div class="scribe-divider"><span>OR</span></div>
 
                         <input type="file" id="scribe-upload" accept="audio/*" hidden>
-                        <label for="scribe-upload" class="scribe-upload-btn">
+                        <label for="scribe-upload" class="btn-secondary">
                             <span class="material-symbols-outlined">upload</span>
                             Upload Consultation Audio
                         </label>

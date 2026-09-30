@@ -144,3 +144,38 @@
     color: var(--danger);
     background: var(--danger-light);
 }
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.icon-btn:hover {
+    background: var(--bg-color);
+    color: var(--primary);
+}
+
+.icon-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.icon-btn.sm {
+    width: 32px;
+    height: 32px;
+}
+
+.icon-btn.sm .material-symbols-outlined {
+    font-size: 18px;
+}

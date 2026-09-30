@@ -160,7 +160,7 @@
                         <div class="scribe-section-head">
                             <span class="material-symbols-outlined">${icon}</span>
                             <h3>${title}</h3>
-                            <button class="scribe-edit-btn" data-action="edit" title="Edit ${title}">
+                            <button class="icon-btn sm" data-action="edit" title="Edit ${title}">
                                 <span class="material-symbols-outlined">edit</span>
                             </button>
                             <button class="scribe-toggle ${on ? "on" : ""}" data-action="toggle"
@@ -182,8 +182,8 @@
         body.innerHTML = `
             <textarea rows="${rows}"></textarea>
             <div class="scribe-edit-actions">
-                <button class="cancel" data-action="cancel-edit">Cancel</button>
-                <button class="save" data-action="save-edit">Save</button>
+                <button class="btn-secondary-sm" data-action="cancel-edit">Cancel</button>
+                <button class="btn-primary-sm" data-action="save-edit">Save</button>
             </div>
         `;
         const ta = body.querySelector("textarea");

@@ -167,26 +167,6 @@ body {
     flex-shrink: 0;
 }
 
-.icon-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.icon-btn:hover {
-    background: var(--bg-color);
-    color: var(--primary);
-}
-
 .notification-btn .badge {
     position: absolute;
     top: 6px;
@@ -271,15 +251,6 @@ body {
 
 .primary-card .metric-header h3 {
     color: rgba(255,255,255,0.9);
-}
-
-.metric-header .material-symbols-outlined {
-    color: var(--text-muted);
-    cursor: pointer;
-}
-
-.primary-card .metric-header .material-symbols-outlined {
-    color: rgba(255,255,255,0.7);
 }
 
 .metric-value {
@@ -386,11 +357,6 @@ body {
 
 .card-header h2 { font-size: 17px; }
 .section-header h3 { font-size: 16px; }
-
-.section-header .material-symbols-outlined {
-    color: var(--text-muted);
-    cursor: pointer;
-}
 
 /* Chart Section */
 .chart-controls {
@@ -643,20 +609,6 @@ body {
 /* Mobile Sidebar Drawer Overlay System */
 .hamburger-menu-btn {
     display: none;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-.hamburger-menu-btn:hover {
-    background: var(--bg-color);
-    color: var(--primary);
 }
 
 @media (max-width: 768px) {
