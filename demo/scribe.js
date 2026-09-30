@@ -126,7 +126,7 @@
         const box = els["scribe-details"];
         const items = [];
         if (s.doctorName) {
-            const name = s.doctorName.startsWith("Dr.") ? s.doctorName : `Dr. ${s.doctorName}`;
+            const name = `Dr. ${s.doctorName.replace(/^(dr\.?|doctor)\s+/i, "")}`;
             items.push(["Doctor", name]);
         }
         if (s.patientName) items.push(["Patient", s.patientName]);
@@ -403,6 +403,7 @@
         const el = els["scribe-share-error"];
         el.textContent = msg;
         el.hidden = !msg;
+        if (msg) els["scribe-share-success"].hidden = true;
     }
 
     async function sendEmail() {

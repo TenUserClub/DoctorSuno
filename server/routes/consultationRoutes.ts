@@ -48,7 +48,7 @@ const upload = multer({
       cb(
         new Error(
           `Unsupported audio format: ${file.mimetype}. ` +
-            `Accepted: wav, mp3, mp4, ogg, webm, flac, m4a.`
+            `Accepted: mp3, wav, m4a, ogg, webm, flac.`
         )
       );
     }

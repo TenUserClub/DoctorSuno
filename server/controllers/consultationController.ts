@@ -49,7 +49,17 @@ export async function processConsultation(
     );
 
     // --- Step 1: Transcribe audio → text ---
-    const transcript = await transcribeAudio(audioFile);
+    let transcript: string;
+    try {
+      transcript = await transcribeAudio(audioFile);
+    } catch (error) {
+      console.error("[Controller] Transcription failed:", error instanceof Error ? error.message : error);
+      res.status(422).json({
+        success: false,
+        error: "We couldn't transcribe this audio. Please check the recording is clear and try again.",
+      });
+      return;
+    }
     console.log(
       `[Controller] Transcript (${transcript.length} chars): "${transcript.substring(0, 100)}…"`
     );
