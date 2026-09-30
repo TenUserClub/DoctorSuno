@@ -1,5 +1,3 @@
-import axios from "axios";
-
 /**
  * Mailgun Service
  * ---------------
@@ -36,18 +34,21 @@ export async function sendEmailSummary(
 
   console.log(`[Mailgun] Sending email to ${email}…`);
 
-  try {
-    const response = await axios.post(url, formData, {
-      headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${auth}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formData.toString(),
+  });
+  const data: any = await response.json().catch(() => ({}));
 
-    console.log(`[Mailgun] Email sent successfully. ID: ${response.data.id}`);
-    return response.data;
-  } catch (error: any) {
-    console.error("[Mailgun] Error sending email:", error.response?.data || error.message);
-    throw new Error(`Failed to send email: ${error.message}`);
+  if (!response.ok) {
+    console.error("[Mailgun] Error sending email:", data);
+    throw new Error(`Failed to send email: Mailgun responded with ${response.status}`);
   }
+
+  console.log(`[Mailgun] Email sent successfully. ID: ${data.id}`);
+  return data;
 }

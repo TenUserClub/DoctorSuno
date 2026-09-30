@@ -11,8 +11,25 @@
 // Sign up at https://console.groq.com to get your free API key.
 // =============================================================================
 
-import axios from "axios";
-import FormData from "form-data";
+async function requestJson(url: string, init: RequestInit = {}): Promise<any> {
+  const res = await fetch(url, init);
+  const body = await res.text();
+  let data: any = body;
+  try { data = body ? JSON.parse(body) : null; } catch { /* non-JSON body */ }
+  if (!res.ok) {
+    const detail = (data && typeof data === "object" && (data.detail || data.error?.message || data.message)) || body;
+    throw new Error(`Request failed with status code ${res.status}${detail ? `: ${String(detail).slice(0, 200)}` : ""}`);
+  }
+  return data;
+}
+
+function jsonPost(url: string, apiKey: string, payload: unknown): Promise<any> {
+  return requestJson(url, {
+    method: "POST",
+    headers: { "api-subscription-key": apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -92,30 +109,22 @@ async function transcribeWithGroq(
   apiKey: string
 ): Promise<string> {
   const form = new FormData();
-
-  form.append("file", audioFile.buffer, {
-    filename: audioFile.originalname || "audio.wav",
-    contentType: audioFile.mimetype || "audio/wav",
-  });
-
-  // whisper-large-v3-turbo is the fastest and best quality on Groq
+  form.append(
+    "file",
+    new Blob([audioFile.buffer], { type: audioFile.mimetype || "audio/wav" }),
+    audioFile.originalname || "audio.wav"
+  );
   form.append("model", "whisper-large-v3-turbo");
-
-  // Groq will auto-detect the language if not specified
-  // form.append("language", "hi");
-
-  // Plain text response format for simplicity
   form.append("response_format", "json");
 
-  const response = await axios.post(GROQ_WHISPER_URL, form, {
-    headers: {
-      ...form.getHeaders(),
-      Authorization: `Bearer ${apiKey}`,
-    },
-    timeout: 60_000, // 60 s generous timeout for long recordings
+  const data = await requestJson(GROQ_WHISPER_URL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}` },
+    body: form,
+    signal: AbortSignal.timeout(60_000),
   });
 
-  const transcript: string = response.data?.text;
+  const transcript: string = data?.text;
   if (!transcript) {
     throw new Error("Groq Whisper API returned an empty transcript.");
   }
@@ -138,56 +147,44 @@ async function transcribeWithSarvam(
   try {
     // 1. Initialize Job
     console.log("[ASR-Batch] Initializing job…");
-    const initRes = await axios.post(BASE_URL, {
-      job_parameters: {
-        model: "saaras:v3",
-        mode: "translate",
-        with_timestamps: false
-      }
-    }, { headers: { "api-subscription-key": apiKey } });
-    const jobId = initRes.data.job_id;
+    const initRes = await jsonPost(BASE_URL, apiKey, {
+      job_parameters: { model: "saaras:v3", mode: "translate", with_timestamps: false },
+    });
+    const jobId = initRes.job_id;
     console.log(`[ASR-Batch] Job ID: ${jobId}`);
 
     // 2. Get Upload URL
-    const uploadRes = await axios.post(`${BASE_URL}/upload-files`, {
-      job_id: jobId,
-      files: [fileName]
-    }, { headers: { "api-subscription-key": apiKey } });
-    const uploadUrl = uploadRes.data.upload_urls[fileName].file_url;
+    const uploadRes = await jsonPost(`${BASE_URL}/upload-files`, apiKey, { job_id: jobId, files: [fileName] });
+    const uploadUrl = uploadRes.upload_urls[fileName].file_url;
 
     // 3. Upload file to Azure storage (standard PUT as BlockBlob)
     console.log("[ASR-Batch] Uploading audio…");
-    await axios.put(uploadUrl, audioFile.buffer, {
-      headers: {
-        "x-ms-blob-type": "BlockBlob",
-        "Content-Type": audioFile.mimetype || "audio/wav",
-      },
-      maxBodyLength: Infinity,
-      maxContentLength: Infinity
+    await requestJson(uploadUrl, {
+      method: "PUT",
+      headers: { "x-ms-blob-type": "BlockBlob", "Content-Type": audioFile.mimetype || "audio/wav" },
+      body: new Blob([audioFile.buffer]),
     });
 
     // 4. Start processing
     console.log("[ASR-Batch] Starting job…");
-    await axios.post(`${BASE_URL}/${jobId}/start`, {}, {
-      headers: { "api-subscription-key": apiKey }
-    });
+    await jsonPost(`${BASE_URL}/${jobId}/start`, apiKey, {});
 
-    // 5. Poll for completion
+    // 5. Poll for completion. Capped so a whole request stays under the
+    // Workers free-plan limit of 50 outbound calls (6 fixed calls + polls).
     let state = "Accepted";
     let finalStatus: any = null;
-    const POLLING_INTERVAL = 3000;
-    const MAX_POLLS = 100; // ~5 minutes max
-    
+    const MAX_POLLS = 36;
+
     for (let i = 0; i < MAX_POLLS; i++) {
-      await new Promise(r => setTimeout(r, POLLING_INTERVAL));
-      const s = await axios.get(`${BASE_URL}/${jobId}/status`, {
-        headers: { "api-subscription-key": apiKey }
+      await new Promise((r) => setTimeout(r, Math.min(2000 + i * 1000, 8000)));
+      const status = await requestJson(`${BASE_URL}/${jobId}/status`, {
+        headers: { "api-subscription-key": apiKey },
       });
-      state = s.data.job_state;
+      state = status.job_state;
       console.log(`[ASR-Batch] Polling... State: ${state}`);
-      
+
       if (state === "Completed" || state === "Failed") {
-        finalStatus = s.data;
+        finalStatus = status;
         break;
       }
     }
@@ -197,23 +194,13 @@ async function transcribeWithSarvam(
     }
 
     // 6. Get Download URL
-    // We look for the output filename (usually 0.json for the first file)
     const outputFileName = finalStatus.job_details[0]?.outputs[0]?.file_name || "0.json";
-    
-    const dlRes = await axios.post(`${BASE_URL}/download-files`, {
-      job_id: jobId,
-      files: [outputFileName]
-    }, { headers: { "api-subscription-key": apiKey } });
-    
-    const dlUrl = dlRes.data.download_urls[outputFileName].file_url;
+    const dlRes = await jsonPost(`${BASE_URL}/download-files`, apiKey, { job_id: jobId, files: [outputFileName] });
+    const dlUrl = dlRes.download_urls[outputFileName].file_url;
 
-    // 7. Retrieve transcription content
-    const contentRes = await axios.get(dlUrl);
-    
-    // The format is usually { transcripts: [ { transcript: "..." } ] }
-    const resData = contentRes.data;
-    const transcript = resData.transcripts?.[0]?.transcript || 
-                      resData.transcript; // Fallback to flat model
+    // 7. Retrieve transcription content: { transcripts: [ { transcript: "..." } ] }
+    const resData = await requestJson(dlUrl);
+    const transcript = resData.transcripts?.[0]?.transcript || resData.transcript;
 
     if (!transcript) {
       console.error("[ASR-Batch] Raw result data:", resData);
@@ -222,8 +209,7 @@ async function transcribeWithSarvam(
 
     return transcript;
   } catch (error: any) {
-    const errorData = error.response?.data;
-    console.error("[ASR-Batch] Error details:", errorData || error.message);
-    throw new Error(`Sarvam Batch ASR fail: ${errorData?.detail || error.message}`);
+    console.error("[ASR-Batch] Error details:", error.message);
+    throw new Error(`Sarvam Batch ASR fail: ${error.message}`);
   }
 }

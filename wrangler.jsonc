@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "doctorsuno",
+  "account_id": "d44c9db5b1e4603311b0442b04a02cfd",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "run_worker_first": ["/api/*", "/health", "/dashboard/*", "!/dashboard/*.css", "!/dashboard/*.js"]
+  },
+  "observability": { "enabled": true }
+}

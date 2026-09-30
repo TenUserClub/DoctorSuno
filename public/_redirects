@@ -1,0 +1,2 @@
+/demo /dashboard 301
+/demo/* /dashboard 301
