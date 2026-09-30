@@ -76,7 +76,17 @@ app.use(express.urlencoded({ extended: true }));
 /**
  * Serve static frontend files (landing page index.html, style.css, script.js, /demo, etc.)
  */
-app.use(express.static(path.join(__dirname, "..")));
+const siteRoot = path.join(__dirname, "..");
+
+app.get("/index.html", (_req: Request, res: Response) => res.redirect(301, "/"));
+app.get(["/demo", "/demo/", "/demo/index", "/demo/index.html"], (_req: Request, res: Response) =>
+  res.redirect(301, "/dashboard")
+);
+app.get(["/dashboard", "/dashboard/*"], (_req: Request, res: Response) =>
+  res.sendFile(path.join(siteRoot, "demo", "index.html"))
+);
+
+app.use(express.static(siteRoot));
 
 /**
  * GET /health

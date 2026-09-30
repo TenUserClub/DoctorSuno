@@ -394,15 +394,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Views
+    // Views, each with its own URL under /dashboard
+    const VIEW_PATHS = {
+        'dashboard-view': '',
+        'patients-view': 'patients',
+        'reports-view': 'reports',
+        'scribe-view': 'scribe',
+        'transcriptions-view': 'transcriptions',
+        'settings-view': 'settings'
+    };
+    const NAV_FOR = { 'transcription-view': 'transcriptions-view' };
+    let current = { view: 'dashboard-view', param: null };
+    const pathFor = (view, param) => view === 'transcription-view'
+        ? `/dashboard/transcriptions/${encodeURIComponent(param)}`
+        : '/dashboard' + (VIEW_PATHS[view] ? '/' + VIEW_PATHS[view] : '');
+    const routeFromPath = () => {
+        const m = location.pathname.match(/^\/dashboard(?:\/([\w-]+)(?:\/([\w-]+))?)?\/?$/);
+        if (!m) return { view: 'dashboard-view', param: null };
+        const [, seg = '', param] = m;
+        if (seg === 'transcriptions' && param) return { view: 'transcription-view', param };
+        return { view: Object.keys(VIEW_PATHS).find(v => VIEW_PATHS[v] === seg) || 'dashboard-view', param: null };
+    };
+
     const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
     const viewSections = document.querySelectorAll('.view-section');
     const pageTitle = document.getElementById('page-title');
 
-    const switchView = (targetId) => {
+    const switchView = (targetId, { history: mode = 'push', param = null } = {}) => {
         if (!document.getElementById(targetId)) targetId = 'dashboard-view';
+        const navTarget = NAV_FOR[targetId] || targetId;
         navItems.forEach(nav => {
-            const on = nav.getAttribute('data-target') === targetId;
+            const on = nav.getAttribute('data-target') === navTarget;
             nav.classList.toggle('active', on);
             if (on) {
                 nav.setAttribute('aria-current', 'page');
@@ -418,12 +440,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         appState.view = targetId;
         save();
+        current = { view: targetId, param };
+        const url = pathFor(targetId, param);
+        if (mode !== 'none' && location.pathname !== url) {
+            history[mode === 'replace' ? 'replaceState' : 'pushState']({ view: targetId, param }, '', url);
+        }
+        window.scrollTo(0, 0);
+        document.dispatchEvent(new CustomEvent('dashboard:route', { detail: current }));
+    };
+    window.DoctorSunoNav = {
+        go: (view, param = null) => switchView(view, { param }),
+        current: () => current
     };
 
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             const targetId = item.getAttribute('data-target');
-            if (!targetId) return;
+            if (!targetId || e.metaKey || e.ctrlKey || e.shiftKey) return;
             e.preventDefault();
             switchView(targetId);
         });
@@ -431,7 +464,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-goto]').forEach(el => {
         el.addEventListener('click', () => switchView(el.getAttribute('data-goto')));
     });
-    switchView(appState.view);
+    window.addEventListener('popstate', () => {
+        const r = routeFromPath();
+        switchView(r.view, { history: 'none', param: r.param });
+    });
+    const initial = routeFromPath();
+    switchView(initial.view, { history: 'replace', param: initial.param });
 
     // Patients directory filters
     document.getElementById('patients-search')?.addEventListener('input', renderPatientsDirectory);

@@ -43,8 +43,9 @@
         "scribe-error-text", "scribe-retry-btn", "scribe-summary-ready",
         "scribe-details", "scribe-sections", "scribe-transcript-wrap", "scribe-transcript",
         "scribe-send-btn", "scribe-share-error", "scribe-share-success", "scribe-print-btn",
-        "scribe-note-actions", "scribe-title", "scribe-meta", "scribe-sessions-list", "scribe-new-btn",
+        "scribe-note-actions", "scribe-title", "scribe-meta", "scribe-sessions-list",
         "scribe-tab-note", "scribe-tab-transcript", "scribe-note-panel",
+        "transcriptions-new-btn", "transcriptions-count", "nav-transcriptions-count",
     ];
 
     // ---------------------------------------------------------------------
@@ -130,61 +131,71 @@
         return session.summary?.patientName || "Consultation";
     }
 
+    const goTo = (view, param) => window.DoctorSunoNav?.go(view, param);
+
     function renderSessions() {
         const list = els["scribe-sessions-list"];
-        if (!state.sessions.length) {
-            list.innerHTML = `<p class="sessions-empty">No sessions yet. Record or upload a consultation to create one.</p>`;
+        const n = state.sessions.length;
+        els["transcriptions-count"].textContent = n ? `${n} ${n === 1 ? "transcription" : "transcriptions"}` : "";
+        els["nav-transcriptions-count"].textContent = n || "";
+        $("transcriptions-empty").hidden = n > 0;
+        $("transcriptions-panel").hidden = n === 0;
+        els["transcriptions-new-btn"].hidden = n === 0;
+        if (!n) {
+            list.innerHTML = "";
             return;
         }
         list.innerHTML = state.sessions.map((s) => `
-            <div class="session-row ${s.id === state.activeId ? "active" : ""}">
-                <button type="button" class="session-open" data-session="${s.id}" aria-current="${s.id === state.activeId}">
-                    <strong>${esc(sessionTitle(s))}</strong>
-                    <span class="session-meta">${esc(formatDate(s.createdAt))}</span>
-                    <span class="session-snippet">${esc((s.edited?.diagnosis || "").split("\n")[0])}</span>
-                </button>
-                <button type="button" class="icon-btn sm session-delete" data-delete-session="${s.id}" aria-label="Delete session ${esc(sessionTitle(s))}">
-                    <span class="material-symbols-outlined">delete</span>
-                </button>
-            </div>
+            <tr class="session-row" data-session="${s.id}" tabindex="0" aria-label="Open transcription for ${esc(sessionTitle(s))}">
+                <td><strong>${esc(sessionTitle(s))}</strong></td>
+                <td class="muted">${esc(formatDate(s.createdAt))}</td>
+                <td class="muted">${esc(s.summary?.doctorName ? doctorLabel(s.summary.doctorName) : "-")}</td>
+                <td class="muted session-snippet">${esc((s.edited?.diagnosis || "").split("\n")[0])}</td>
+                <td class="actions-col">
+                    <button type="button" class="icon-btn sm row-remove" data-delete-session="${s.id}" aria-label="Delete transcription for ${esc(sessionTitle(s))}">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </td>
+            </tr>
         `).join("");
     }
 
     function openSession(id) {
         const session = state.sessions.find((s) => s.id === id);
-        if (!session || state.status === "recording" || state.status === "paused" || state.status === "processing") return;
+        if (!session) return false;
         state.activeId = id;
         state.summary = session.summary;
         state.transcript = session.transcript;
         state.edited = { ...session.edited };
         state.selected = { ...session.selected };
-        state.status = "ready";
         persistSessions();
-        renderSessions();
-        renderRecorder();
-        renderReady();
+        renderNote();
+        return true;
     }
 
-    function newSession() {
-        if (state.status === "recording" || state.status === "paused" || state.status === "processing") return;
+    function showNotFound() {
         state.activeId = null;
         state.summary = null;
-        state.transcript = "";
-        persistSessions();
-        discard();
-        renderSessions();
-        renderHeader();
-        showPanel("idle");
+        els["scribe-title"].textContent = "Transcription not found";
+        els["scribe-meta"].textContent = "It may have been deleted.";
+        els["scribe-summary-ready"].hidden = true;
+        els["scribe-note-actions"].hidden = true;
+    }
+
+    function handleRoute(route) {
+        if (!route) return;
+        if (route.view === "transcription-view" && !openSession(Number(route.param))) showNotFound();
     }
 
     function deleteSession(id) {
         state.sessions = state.sessions.filter((s) => s.id !== id);
         if (state.activeId === id) {
-            newSession();
-        } else {
-            persistSessions();
-            renderSessions();
+            state.activeId = null;
+            state.summary = null;
         }
+        persistSessions();
+        renderSessions();
+        if (window.DoctorSunoNav?.current().view === "transcription-view") goTo("transcriptions-view");
     }
 
     // ---------------------------------------------------------------------
@@ -221,28 +232,17 @@
 
     function renderHeader() {
         const session = activeSession();
-        if (session && state.status === "ready") {
-            els["scribe-title"].textContent = sessionTitle(session);
-            const bits = [formatDate(session.createdAt)];
-            if (session.summary?.doctorName) bits.push(doctorLabel(session.summary.doctorName));
-            els["scribe-meta"].textContent = bits.join(" · ");
-        } else {
-            els["scribe-title"].textContent = "New consultation";
-            els["scribe-meta"].textContent = "Record or upload the conversation to generate a note";
-        }
+        if (!session) return;
+        els["scribe-title"].textContent = sessionTitle(session);
+        const bits = [formatDate(session.createdAt)];
+        if (session.summary?.doctorName) bits.push(doctorLabel(session.summary.doctorName));
+        els["scribe-meta"].textContent = bits.join(" · ");
     }
 
     function showPanel(panel) {
         els["scribe-summary-idle"].hidden = panel !== "idle";
         els["scribe-summary-processing"].hidden = panel !== "processing";
         els["scribe-summary-error"].hidden = panel !== "error";
-        els["scribe-summary-ready"].hidden = panel !== "ready";
-        els["scribe-note-actions"].hidden = panel !== "ready";
-        if (panel !== "ready") {
-            els["scribe-share-error"].hidden = true;
-            els["scribe-share-success"].hidden = true;
-        }
-        renderHeader();
     }
 
     function renderDetails() {
@@ -321,13 +321,17 @@
         els["scribe-transcript-wrap"].hidden = note;
     }
 
-    function renderReady() {
+    function renderNote() {
         renderDetails();
         renderSections();
         const t = (state.transcript || "").trim();
         els["scribe-transcript"].textContent = t || "No transcript available for this session.";
         selectTab("note");
-        showPanel("ready");
+        renderHeader();
+        els["scribe-summary-ready"].hidden = false;
+        els["scribe-note-actions"].hidden = false;
+        els["scribe-share-error"].hidden = true;
+        els["scribe-share-success"].hidden = true;
     }
 
     // ---------------------------------------------------------------------
@@ -446,13 +450,12 @@
                 selected: { ...state.selected },
             };
             state.sessions.unshift(session);
-            state.activeId = session.id;
             persistSessions();
-
-            state.status = "ready";
             renderSessions();
-            renderRecorder();
-            renderReady();
+
+            discard();
+            showPanel("idle");
+            goTo("transcription-view", session.id);
         } catch (err) {
             console.error("Failed to process consultation:", err);
             state.status = "error";
@@ -667,7 +670,7 @@
 
         els["scribe-record-btn"].addEventListener("click", () => {
             if (state.status === "recording" || state.status === "paused") stopRecording();
-            else if (state.status === "idle" || state.status === "preview" || state.status === "error") startRecording();
+            else if (state.status === "idle" || state.status === "preview" || state.status === "error") { showPanel("idle"); startRecording(); }
         });
 
         els["scribe-pause-btn"].addEventListener("click", togglePause);
@@ -731,13 +734,19 @@
             });
         });
 
+        const openFromList = (row) => goTo("transcription-view", Number(row.getAttribute("data-session")));
         els["scribe-sessions-list"].addEventListener("click", (e) => {
             const del = e.target.closest("[data-delete-session]");
             if (del) { deleteSession(Number(del.getAttribute("data-delete-session"))); return; }
-            const open = e.target.closest("[data-session]");
-            if (open) openSession(Number(open.getAttribute("data-session")));
+            const row = e.target.closest("[data-session]");
+            if (row) openFromList(row);
         });
-        els["scribe-new-btn"].addEventListener("click", newSession);
+        els["scribe-sessions-list"].addEventListener("keydown", (e) => {
+            const row = e.target.closest("[data-session]");
+            if (row && e.target === row && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openFromList(row); }
+        });
+        els["transcriptions-new-btn"].addEventListener("click", () => goTo("scribe-view"));
+        document.addEventListener("dashboard:route", (e) => handleRoute(e.detail));
 
         els["scribe-send-btn"].addEventListener("click", sendEmail);
         els["scribe-copy-btn"].addEventListener("click", copySummary);
@@ -746,7 +755,7 @@
         loadSessions();
         renderSessions();
         renderRecorder();
-        if (activeSession()) openSession(state.activeId);
-        else showPanel("idle");
+        showPanel("idle");
+        handleRoute(window.DoctorSunoNav?.current());
     });
 })();

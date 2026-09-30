@@ -23,38 +23,43 @@
 
     <div class="app-container">
         <aside class="sidebar">
-            <a href="../index.html" class="sb-brand">
+            <a href="/" class="sb-brand">
                 <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ecg_heart</span>
                 DoctorSuno
             </a>
 
             <nav class="sidebar-nav" aria-label="Main">
                 <p class="sb-label">Clinic</p>
-                <a href="#" class="nav-item active" data-target="dashboard-view">
+                <a href="/dashboard" class="nav-item active" data-target="dashboard-view">
                     <span class="material-symbols-outlined">space_dashboard</span>
                     Dashboard
                 </a>
-                <a href="#" class="nav-item" data-target="patients-view">
+                <a href="/dashboard/patients" class="nav-item" data-target="patients-view">
                     <span class="material-symbols-outlined">group</span>
                     Patients
                     <span class="nav-count" id="nav-patients-count"></span>
                 </a>
-                <a href="#" class="nav-item" data-target="reports-view">
+                <a href="/dashboard/reports" class="nav-item" data-target="reports-view">
                     <span class="material-symbols-outlined">bar_chart</span>
                     Reports
                 </a>
-                <a href="#" class="nav-item" data-target="settings-view">
-                    <span class="material-symbols-outlined">settings</span>
-                    Settings
-                </a>
-                <a href="#" class="nav-item" data-target="scribe-view">
+                <a href="/dashboard/scribe" class="nav-item" data-target="scribe-view">
                     <span class="material-symbols-outlined">mic</span>
                     Scribe
+                </a>
+                <a href="/dashboard/transcriptions" class="nav-item" data-target="transcriptions-view">
+                    <span class="material-symbols-outlined">history</span>
+                    Transcriptions
+                    <span class="nav-count" id="nav-transcriptions-count"></span>
+                </a>
+                <a href="/dashboard/settings" class="nav-item" data-target="settings-view">
+                    <span class="material-symbols-outlined">settings</span>
+                    Settings
                 </a>
             </nav>
 
             <div class="sidebar-bottom">
-                <a href="../index.html" class="nav-item">
+                <a href="/" class="nav-item">
                     <span class="material-symbols-outlined">arrow_back</span>
                     Back to Home
                 </a>
@@ -328,44 +333,53 @@
                 </div>
             </div>
 
-            <div id="scribe-view" class="view-section" style="display: none;">
-                <div class="scribe-layout">
-                    <aside class="panel panel-flush scribe-sessions" aria-label="Sessions">
-                        <div class="sessions-head">
-                            <h3>Sessions</h3>
-                            <button class="btn-primary-sm" id="scribe-new-btn">
-                                <span class="material-symbols-outlined">add</span>
-                                New session
-                            </button>
-                        </div>
-                        <div class="sessions-list" id="scribe-sessions-list"></div>
-                    </aside>
+            <div id="transcriptions-view" class="view-section" style="display: none;">
+                <div class="page-head">
+                    <div>
+                        <h2>Transcriptions</h2>
+                        <p id="transcriptions-count"></p>
+                    </div>
+                    <button class="btn-primary-sm" id="transcriptions-new-btn">
+                        <span class="material-symbols-outlined">add</span>
+                        New transcription
+                    </button>
+                </div>
+                <div class="empty-state in-page" id="transcriptions-empty" hidden>
+                    <span class="empty-icon material-symbols-outlined">history</span>
+                    <h2>No transcriptions yet</h2>
+                    <p>Record or upload a consultation in Scribe and it will appear here.</p>
+                    <button class="btn-primary-sm" data-goto="scribe-view">
+                        <span class="material-symbols-outlined">mic</span>
+                        Go to Scribe
+                    </button>
+                </div>
+                <section class="panel panel-flush" id="transcriptions-panel">
+                    <div class="table-wrap">
+                        <table class="data-table transcriptions-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Date</th>
+                                    <th>Doctor</th>
+                                    <th>Diagnosis</th>
+                                    <th class="actions-col"><span class="sr-only">Actions</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="scribe-sessions-list"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
 
+            <div id="scribe-view" class="view-section" style="display: none;">
+                <div class="page-head">
+                    <div>
+                        <h2>New transcription</h2>
+                        <p>Record or upload the conversation to generate a note</p>
+                    </div>
+                </div>
+                <div class="scribe-layout">
                     <section class="panel panel-flush scribe-workspace">
-                        <header class="ws-head">
-                            <div class="ws-title">
-                                <h2 id="scribe-title">New consultation</h2>
-                                <p id="scribe-meta">Record or upload the conversation to generate a note</p>
-                            </div>
-                            <div class="ws-actions" id="scribe-note-actions" hidden>
-                                <button id="scribe-copy-btn" class="btn-secondary-sm">
-                                    <span class="material-symbols-outlined">content_copy</span>
-                                    <span id="scribe-copy-label">Copy</span>
-                                </button>
-                                <button id="scribe-print-btn" class="btn-secondary-sm">
-                                    <span class="material-symbols-outlined">download</span>
-                                    Print / Save PDF
-                                </button>
-                                <button id="scribe-send-btn" class="btn-primary-sm scribe-send-btn">
-                                    <span class="material-symbols-outlined">send</span>
-                                    <span class="scribe-send-label">Send via Email</span>
-                                </button>
-                            </div>
-                        </header>
-                        <div class="ws-feedback">
-                            <p class="scribe-share-error" id="scribe-share-error" hidden></p>
-                            <p class="scribe-share-success" id="scribe-share-success" role="status" hidden></p>
-                        </div>
 
                         <!-- Capture -->
                         <div id="scribe-summary-idle" class="capture">
@@ -437,6 +451,42 @@
                                 Try Again
                             </button>
                         </div>
+
+                    </section>
+                </div>
+            </div>
+
+            <div id="transcription-view" class="view-section" style="display: none;">
+                <button class="link-btn back-link" data-goto="transcriptions-view">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    All transcriptions
+                </button>
+                <div class="page-head">
+                    <div>
+                        <h2 id="scribe-title">Transcription</h2>
+                        <p id="scribe-meta"></p>
+                    </div>
+                    <div class="ws-actions" id="scribe-note-actions" hidden>
+                                <button id="scribe-copy-btn" class="btn-secondary-sm">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                    <span id="scribe-copy-label">Copy</span>
+                                </button>
+                                <button id="scribe-print-btn" class="btn-secondary-sm">
+                                    <span class="material-symbols-outlined">download</span>
+                                    Print / Save PDF
+                                </button>
+                                <button id="scribe-send-btn" class="btn-primary-sm scribe-send-btn">
+                                    <span class="material-symbols-outlined">send</span>
+                                    <span class="scribe-send-label">Send via Email</span>
+                                </button>
+                    </div>
+                </div>
+                <div class="ws-feedback">
+                    <p class="scribe-share-error" id="scribe-share-error" hidden></p>
+                    <p class="scribe-share-success" id="scribe-share-success" role="status" hidden></p>
+                </div>
+                <div class="scribe-layout">
+                    <section class="panel panel-flush scribe-workspace">
 
                         <!-- Note -->
                         <div id="scribe-summary-ready" hidden>

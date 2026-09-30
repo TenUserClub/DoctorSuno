@@ -560,6 +560,7 @@ button { font: inherit; color: inherit; }
     color: var(--primary);
     font-size: 26px;
 }
+.empty-state.in-page { min-height: calc(100vh - 60px - 48px - 76px); }
 .empty-state h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
 .empty-state p { font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-3); }
 
