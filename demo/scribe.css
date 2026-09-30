@@ -34,8 +34,9 @@
 
 .scribe-card-header h2 {
     font-family: var(--font-head);
-    font-weight: 800;
-    font-size: 24px;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
     color: var(--text-main);
     margin-bottom: 4px;
 }
@@ -85,7 +86,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 12px 32px rgba(94, 74, 209, 0.35);
     transition: all 0.3s ease;
 }
 
@@ -100,13 +100,12 @@
     background: var(--surface-solid);
     border: 4px solid var(--primary);
     color: var(--primary);
-    box-shadow: 0 8px 24px rgba(94, 74, 209, 0.2);
 }
 
 .scribe-timer {
     font-family: var(--font-head);
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 34px;
+    font-weight: 600;
     color: var(--primary);
     font-variant-numeric: tabular-nums;
     margin-bottom: 4px;
@@ -176,9 +175,10 @@
 }
 
 .scribe-divider span {
+    font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
 }
 
 .scribe-privacy {
@@ -276,10 +276,11 @@
 
 .scribe-detail-item .scribe-detail-label {
     display: block;
+    font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.08em;
     color: var(--text-muted);
     margin-bottom: 4px;
 }
@@ -302,9 +303,8 @@
     overflow: hidden;
     border-radius: var(--radius-md);
     background: var(--surface-solid);
-    border: 1px solid rgba(94, 74, 209, 0.15);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, opacity 0.2s;
 }
 
 .scribe-section::before {
@@ -344,10 +344,11 @@
 
 .scribe-section-head h3 {
     flex: 1;
-    font-size: 13px;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.08em;
     color: var(--text-main);
 }
 

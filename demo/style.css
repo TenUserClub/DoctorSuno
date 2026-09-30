@@ -41,9 +41,9 @@ body {
 
 .sidebar-logo h2 {
     font-family: var(--font-head);
-    font-weight: 800;
-    font-size: 24px;
-    letter-spacing: -0.5px;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
 }
 
 .logo-icon {
@@ -256,7 +256,9 @@ body {
 .metric-value {
     font-family: var(--font-head);
     font-size: 32px;
-    font-weight: 800;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
     margin-bottom: 16px;
     min-width: 0;
     display: flex;
@@ -317,8 +319,10 @@ body {
 .gauge-value {
     position: absolute;
     font-family: var(--font-head);
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
     color: var(--text-main);
     top: 50%;
     transform: translateY(-20%);
@@ -351,7 +355,8 @@ body {
 
 .card-header h2, .section-header h3 {
     font-family: var(--font-head);
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -0.015em;
     color: var(--text-main);
 }
 
@@ -413,10 +418,11 @@ body {
 .history-table th {
     text-align: left;
     padding: 10px 12px;
-    font-size: 12px;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.08em;
     color: var(--text-muted);
     background: var(--surface-low);
     border-bottom: 1px solid var(--border);
