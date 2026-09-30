@@ -328,87 +328,101 @@
                 </div>
             </div>
 
-            <!-- Scribe View (native — integrated docscribe) -->
             <div id="scribe-view" class="view-section" style="display: none;">
-                <div class="scribe-grid">
-                    <!-- Recorder Card -->
-                    <div class="card scribe-recorder-card">
-                        <div class="scribe-card-header">
-                            <h2>Consultation Scribe</h2>
-                            <p>Capture your patient conversation seamlessly</p>
-                        </div>
-
-                        <div class="scribe-mic-area">
-                            <div class="scribe-ping" id="scribe-ping" hidden></div>
-                            <button id="scribe-record-btn" class="scribe-mic-btn" title="Start recording">
-                                <span class="material-symbols-outlined">mic</span>
+                <div class="scribe-layout">
+                    <aside class="panel panel-flush scribe-sessions" aria-label="Sessions">
+                        <div class="sessions-head">
+                            <h3>Sessions</h3>
+                            <button class="btn-primary-sm" id="scribe-new-btn">
+                                <span class="material-symbols-outlined">add</span>
+                                New session
                             </button>
                         </div>
+                        <div class="sessions-list" id="scribe-sessions-list"></div>
+                    </aside>
 
-                        <div class="scribe-timer" id="scribe-timer" hidden>00:00</div>
-                        <p class="scribe-hint" id="scribe-hint">Tap the mic to start your session</p>
-
-                        <div class="scribe-live-controls" id="scribe-live-controls" hidden>
-                            <button id="scribe-pause-btn" class="btn-secondary-sm">
-                                <span class="material-symbols-outlined">pause</span>
-                                <span id="scribe-pause-label">Pause</span>
-                            </button>
-                        </div>
-
-                        <!-- Preview state (after stop / upload) -->
-                        <div class="scribe-preview" id="scribe-preview" hidden>
-                            <audio id="scribe-audio-preview" controls></audio>
-                            <div class="scribe-preview-actions">
-                                <button id="scribe-process-btn" class="btn-primary-sm">
-                                    <span class="material-symbols-outlined">auto_awesome</span>
-                                    Generate Summary
+                    <section class="panel panel-flush scribe-workspace">
+                        <header class="ws-head">
+                            <div class="ws-title">
+                                <h2 id="scribe-title">New consultation</h2>
+                                <p id="scribe-meta">Record or upload the conversation to generate a note</p>
+                            </div>
+                            <div class="ws-actions" id="scribe-note-actions" hidden>
+                                <button id="scribe-copy-btn" class="btn-secondary-sm">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                    <span id="scribe-copy-label">Copy</span>
                                 </button>
-                                <button id="scribe-discard-btn" class="btn-secondary-sm danger">
-                                    <span class="material-symbols-outlined">delete</span>
-                                    Discard
+                                <button id="scribe-print-btn" class="btn-secondary-sm">
+                                    <span class="material-symbols-outlined">download</span>
+                                    Print / Save PDF
+                                </button>
+                                <button id="scribe-send-btn" class="btn-primary-sm scribe-send-btn">
+                                    <span class="material-symbols-outlined">send</span>
+                                    <span class="scribe-send-label">Send via Email</span>
                                 </button>
                             </div>
+                        </header>
+                        <div class="ws-feedback">
+                            <p class="scribe-share-error" id="scribe-share-error" hidden></p>
+                            <p class="scribe-share-success" id="scribe-share-success" role="status" hidden></p>
                         </div>
 
-                        <div class="scribe-divider"><span>OR</span></div>
+                        <!-- Capture -->
+                        <div id="scribe-summary-idle" class="capture">
+                            <div class="capture-stage">
+                                <div class="scribe-mic-area">
+                                    <div class="scribe-ping" id="scribe-ping" hidden></div>
+                                    <button id="scribe-record-btn" class="scribe-mic-btn" title="Start recording">
+                                        <span class="material-symbols-outlined">mic</span>
+                                    </button>
+                                </div>
+                                <div class="scribe-timer" id="scribe-timer" hidden>00:00</div>
+                                <p class="scribe-hint" id="scribe-hint">Tap the mic to start your session</p>
 
-                        <input type="file" id="scribe-upload" accept=".mp3,.wav,.m4a,.ogg,.webm,.flac" hidden>
-                        <label for="scribe-upload" class="btn-secondary">
-                            <span class="material-symbols-outlined">upload</span>
-                            Upload Consultation Audio
-                        </label>
+                                <div class="scribe-live-controls" id="scribe-live-controls" hidden>
+                                    <button id="scribe-pause-btn" class="btn-secondary-sm">
+                                        <span class="material-symbols-outlined">pause</span>
+                                        <span id="scribe-pause-label">Pause</span>
+                                    </button>
+                                </div>
 
-                        <div class="scribe-privacy">
-                            <span class="material-symbols-outlined">lock</span>
-                            Ensure patient consent before recording or sharing
-                        </div>
-                    </div>
+                                <div class="scribe-preview" id="scribe-preview" hidden>
+                                    <audio id="scribe-audio-preview" controls></audio>
+                                    <div class="scribe-preview-actions">
+                                        <button id="scribe-process-btn" class="btn-primary-sm">
+                                            <span class="material-symbols-outlined">auto_awesome</span>
+                                            Generate Summary
+                                        </button>
+                                        <button id="scribe-discard-btn" class="btn-secondary-sm danger">
+                                            <span class="material-symbols-outlined">delete</span>
+                                            Discard
+                                        </button>
+                                    </div>
+                                </div>
 
-                    <!-- Summary Card -->
-                    <div class="card scribe-summary-card">
-                        <div class="scribe-card-header row">
-                            <div>
-                                <h2>Medical Highlights</h2>
-                                <p>AI-distilled insights from your consultation</p>
+                                <div class="capture-upload" id="scribe-upload-wrap">
+                                    <span class="capture-or">or</span>
+                                    <input type="file" id="scribe-upload" accept=".mp3,.wav,.m4a,.ogg,.webm,.flac" hidden>
+                                    <label for="scribe-upload" class="btn-secondary-sm">
+                                        <span class="material-symbols-outlined">upload</span>
+                                        Upload Consultation Audio
+                                    </label>
+                                    <span class="capture-formats">MP3, WAV, M4A, OGG, WebM or FLAC</span>
+                                </div>
                             </div>
-                            <button id="scribe-copy-btn" class="btn-secondary-sm" hidden>
-                                <span class="material-symbols-outlined">content_copy</span>
-                                <span id="scribe-copy-label">Copy</span>
-                            </button>
-                        </div>
-
-                        <!-- Idle -->
-                        <div id="scribe-summary-idle" class="scribe-empty">
-                            <span class="material-symbols-outlined">clinical_notes</span>
-                            <p>No active session. Start a recording or upload audio to see findings here.</p>
+                            <p class="scribe-privacy">
+                                <span class="material-symbols-outlined">lock</span>
+                                Ensure patient consent before recording or sharing
+                            </p>
                         </div>
 
                         <!-- Processing -->
-                        <div id="scribe-summary-processing" hidden>
+                        <div id="scribe-summary-processing" class="ws-body" hidden>
                             <div class="scribe-processing-label">
                                 <div class="scribe-spinner"></div>
                                 Synthesizing clinical notes...
                             </div>
+                            <div class="scribe-skeleton short"></div>
                             <div class="scribe-skeleton"></div>
                             <div class="scribe-skeleton"></div>
                             <div class="scribe-skeleton"></div>
@@ -424,39 +438,30 @@
                             </button>
                         </div>
 
-                        <!-- Ready -->
+                        <!-- Note -->
                         <div id="scribe-summary-ready" hidden>
-                            <div id="scribe-details" class="scribe-details" hidden></div>
-                            <div id="scribe-sections" class="scribe-sections"></div>
-
-                            <details class="scribe-transcript" id="scribe-transcript-wrap" hidden>
-                                <summary>
-                                    <span class="material-symbols-outlined">description</span>
-                                    View Full Transcript
-                                </summary>
-                                <p id="scribe-transcript"></p>
-                            </details>
-
-                            <div class="scribe-share">
-                                <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
-                                <button id="scribe-send-btn" class="btn-primary-sm scribe-send-btn">
-                                    <span class="material-symbols-outlined">send</span>
-                                    <span class="scribe-send-label">Send via Email</span>
+                            <div class="ws-tabs" role="tablist" aria-label="Session views">
+                                <button class="ws-tab" id="scribe-tab-note" role="tab" aria-selected="true" aria-controls="scribe-note-panel">
+                                    <span class="material-symbols-outlined">clinical_notes</span>
+                                    Note
                                 </button>
-                                <p class="scribe-share-error" id="scribe-share-error" hidden></p>
-                                <p class="scribe-share-success" id="scribe-share-success" role="status" hidden></p>
-
-                                <div class="scribe-print-wrap">
-                                    <button id="scribe-print-btn" class="btn-secondary-sm" style="width: 100%;">
-                                        <span class="material-symbols-outlined">print</span>
-                                        Print Consultation Summary
-                                    </button>
-                                </div>
+                                <button class="ws-tab" id="scribe-tab-transcript" role="tab" aria-selected="false" aria-controls="scribe-transcript-wrap" tabindex="-1">
+                                    <span class="material-symbols-outlined">description</span>
+                                    Transcript
+                                </button>
                             </div>
 
-                            <p class="scribe-consent-note">This summary was generated automatically. Please review before sharing with the patient.</p>
+                            <div id="scribe-note-panel" class="ws-body" role="tabpanel" aria-labelledby="scribe-tab-note">
+                                <div id="scribe-details" class="scribe-details" hidden></div>
+                                <div id="scribe-sections" class="scribe-sections"></div>
+                                <p class="scribe-consent-note">This summary was generated automatically. Please review before sharing with the patient.</p>
+                            </div>
+
+                            <div id="scribe-transcript-wrap" class="ws-body" role="tabpanel" aria-labelledby="scribe-tab-transcript" hidden>
+                                <p id="scribe-transcript" class="scribe-transcript-text"></p>
+                            </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
         </main>
