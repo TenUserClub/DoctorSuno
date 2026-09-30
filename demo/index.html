@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@400,1,0,24" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme.css">
     <link rel="stylesheet" href="/demo/style.css">
     <link rel="stylesheet" href="/demo/scribe.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -230,7 +231,7 @@
 
             <!-- Patients View -->
             <div id="patients-view" class="view-section" style="display: none;">
-                <div class="card" style="margin: 24px;">
+                <div class="card">
                     <div class="card-header">
                         <h2>Patients Directory</h2>
                         <button class="btn-primary-sm" id="btn-add-patient">
@@ -239,7 +240,7 @@
                         </button>
                     </div>
                     <div class="table-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
-                        <div class="search-bar" style="width: 300px; border: 1px solid var(--grey);">
+                        <div class="search-bar">
                             <span class="material-symbols-outlined">search</span>
                             <input type="text" id="patients-search" placeholder="Search patients...">
                         </div>
@@ -267,14 +268,14 @@
             </div>
 
             <!-- Reports View -->
-            <div id="reports-view" class="view-section" style="display: none; padding: 2rem;">
+            <div id="reports-view" class="view-section" style="display: none;">
                 <h2>Analytics & Reports</h2>
                 <p>Functional view coming soon.</p>
             </div>
 
             <!-- Settings View -->
             <div id="settings-view" class="view-section" style="display: none;">
-                <div class="dashboard-grid" style="padding: 24px;">
+                <div class="dashboard-grid">
                     <div class="main-column">
                         <div class="card">
                             <div class="card-header">
@@ -334,7 +335,7 @@
                         <p class="scribe-hint" id="scribe-hint">Tap the mic to start your session</p>
 
                         <div class="scribe-live-controls" id="scribe-live-controls" hidden>
-                            <button id="scribe-pause-btn" class="scribe-chip-btn">
+                            <button id="scribe-pause-btn" class="btn-secondary-sm">
                                 <span class="material-symbols-outlined">pause</span>
                                 <span id="scribe-pause-label">Pause</span>
                             </button>
@@ -348,7 +349,7 @@
                                     <span class="material-symbols-outlined">auto_awesome</span>
                                     Generate Summary
                                 </button>
-                                <button id="scribe-discard-btn" class="scribe-chip-btn danger">
+                                <button id="scribe-discard-btn" class="btn-secondary-sm danger">
                                     <span class="material-symbols-outlined">delete</span>
                                     Discard
                                 </button>
@@ -376,7 +377,7 @@
                                 <h2>Medical Highlights</h2>
                                 <p>AI-distilled insights from your consultation</p>
                             </div>
-                            <button id="scribe-copy-btn" class="scribe-chip-btn" hidden>
+                            <button id="scribe-copy-btn" class="btn-secondary-sm" hidden>
                                 <span class="material-symbols-outlined">content_copy</span>
                                 <span id="scribe-copy-label">Copy</span>
                             </button>
@@ -423,15 +424,17 @@
                             </details>
 
                             <div class="scribe-share">
-                                <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
-                                <div class="scribe-share-row">
-                                    <input type="email" id="scribe-email" class="form-control" placeholder="Patient's Email Address">
-                                    <button id="scribe-send-btn" class="btn-primary-sm">Send via Email</button>
+                                <div hidden>
+                                    <h3><span class="material-symbols-outlined">mail</span> Share with Patient</h3>
+                                    <div class="scribe-share-row">
+                                        <input type="email" id="scribe-email" class="form-control" placeholder="Patient's Email Address">
+                                        <button id="scribe-send-btn" class="btn-primary-sm">Send via Email</button>
+                                    </div>
+                                    <p class="scribe-share-error" id="scribe-share-error" hidden></p>
                                 </div>
-                                <p class="scribe-share-error" id="scribe-share-error" hidden></p>
 
-                                <div class="scribe-print-wrap" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(94, 74, 209, 0.15);">
-                                    <button id="scribe-print-btn" class="scribe-chip-btn" style="width: 100%; justify-content: center; gap: 8px;">
+                                <div class="scribe-print-wrap">
+                                    <button id="scribe-print-btn" class="btn-secondary-sm" style="width: 100%;">
                                         <span class="material-symbols-outlined">print</span>
                                         Print Consultation Summary
                                     </button>
