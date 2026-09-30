@@ -4,7 +4,7 @@
 // Uses LLMs to extract structured medical information from a transcript.
 //
 // Provider priority:
-//   1. Groq (FREE) — runs Llama 3 70B, extremely fast and cost-effective
+//   1. Groq (FREE) — runs GPT-OSS 120B, extremely fast and cost-effective
 //   2. OpenAI      — if configured (paid fallback)
 //
 // Key constraints:
@@ -87,7 +87,7 @@ Extract the medical summary and return ONLY valid JSON in this exact format:
  * Takes a plain-text transcript and returns a structured MedicalSummary.
  *
  * Strategy:
- *  1. Try Groq (FREE — Llama 3 70B).
+ *  1. Try Groq (FREE — GPT-OSS 120B).
  *  2. If Groq fails, fall back to OpenAI GPT-4o.
  */
 export async function generateMedicalSummary(
@@ -97,8 +97,8 @@ export async function generateMedicalSummary(
   const groq = getGroqClient();
   if (groq) {
     try {
-      console.log("[LLM] Attempting summary via Groq (Llama 3.3 70B Versatile)…");
-      return await callLLM(groq, "llama-3.3-70b-versatile", transcript);
+      console.log("[LLM] Attempting summary via Groq (GPT-OSS 120B)…");
+      return await callLLM(groq, "openai/gpt-oss-120b", transcript);
     } catch (error) {
       console.warn(
         "[LLM] Groq failed, falling back to OpenAI:",
