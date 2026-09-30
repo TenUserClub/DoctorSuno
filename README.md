@@ -5,7 +5,7 @@ Static site + functional dashboard with a natively integrated AI medical scribe.
 ## Structure
 
 - `index.html`, `style.css`, `script.js` — marketing site (doctorsuno.com)
-- `demo/` — dashboard (revamped UI). The Scribe view is now native (`demo/scribe.js`, `demo/scribe.css`) — no iframe.
+- `dashboard/` — dashboard app served at `/dashboard` (Scribe lives in `dashboard/scribe.js`, `dashboard/scribe.css`).
 - `server/` — scribe backend (Express + TypeScript): ASR → LLM summary → email share
 - `api/index.ts` — Vercel serverless entry point; all `/api/*`, `/health`, and `/api-docs` requests are rewritten here (see `vercel.json`)
 

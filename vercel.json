@@ -19,12 +19,8 @@
       "destination": "/api/index"
     },
     {
-      "source": "/dashboard",
-      "destination": "/demo/index.html"
-    },
-    {
       "source": "/dashboard/:path*",
-      "destination": "/demo/index.html"
+      "destination": "/dashboard"
     }
   ],
   "cleanUrls": true,
@@ -40,17 +36,7 @@
       "permanent": true
     },
     {
-      "source": "/demo/",
-      "destination": "/dashboard",
-      "permanent": true
-    },
-    {
-      "source": "/demo/index.html",
-      "destination": "/dashboard",
-      "permanent": true
-    },
-    {
-      "source": "/demo/index",
+      "source": "/demo/:path*",
       "destination": "/dashboard",
       "permanent": true
     }
