@@ -19,29 +19,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Sidebar mobile backdrop -->
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <div class="app-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-logo">
-                <span class="material-symbols-outlined logo-icon" style="font-variation-settings:'FILL' 1;">ecg_heart</span>
-                <h2>DoctorSuno</h2>
-            </div>
-            
-            <div class="doctor-profile">
-                <img src="https://ui-avatars.com/api/?name=Dr&background=5E4AD1&color=fff&rounded=true" alt="Doctor Profile" class="doc-avatar">
-            </div>
+            <a href="../index.html" class="sb-brand">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ecg_heart</span>
+                DoctorSuno
+            </a>
 
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Main">
+                <p class="sb-label">Clinic</p>
                 <a href="#" class="nav-item active" data-target="dashboard-view">
-                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="material-symbols-outlined">space_dashboard</span>
                     Dashboard
                 </a>
                 <a href="#" class="nav-item" data-target="patients-view">
                     <span class="material-symbols-outlined">group</span>
                     Patients
+                    <span class="nav-count" id="nav-patients-count"></span>
                 </a>
                 <a href="#" class="nav-item" data-target="reports-view">
                     <span class="material-symbols-outlined">bar_chart</span>
@@ -56,28 +52,39 @@
                     Scribe
                 </a>
             </nav>
+
             <div class="sidebar-bottom">
                 <a href="../index.html" class="nav-item">
                     <span class="material-symbols-outlined">arrow_back</span>
                     Back to Home
                 </a>
+                <div class="sb-user">
+                    <span class="avatar avatar-primary">DR</span>
+                    <span class="sb-user-text">
+                        <strong id="sb-clinic-name">DoctorSuno Primary Care</strong>
+                        <span id="sb-clinic-email">contact@doctorsuno.com</span>
+                    </span>
+                </div>
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
             <header class="top-header">
                 <button class="icon-btn hamburger-menu-btn" id="btn-sidebar-toggle" aria-label="Toggle Navigation">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
-                <div class="search-bar">
+                <div class="breadcrumb">
+                    <span class="crumb-root">DoctorSuno</span>
+                    <span class="material-symbols-outlined crumb-sep">chevron_right</span>
+                    <span class="crumb-page" id="page-title">Dashboard</span>
+                </div>
+                <div class="search-bar header-search">
                     <span class="material-symbols-outlined">search</span>
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search" aria-label="Search patients">
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn"><span class="material-symbols-outlined">grid_view</span></button>
-                    <button class="icon-btn notification-btn" id="btn-notifications">
+                    <button class="icon-btn" aria-label="Apps"><span class="material-symbols-outlined">grid_view</span></button>
+                    <button class="icon-btn notification-btn" id="btn-notifications" aria-label="Notifications">
                         <span class="material-symbols-outlined">notifications</span>
                         <span class="badge">3</span>
                     </button>
@@ -86,226 +93,238 @@
                         <div class="dropdown-item">New lab result for Arjun</div>
                         <div class="dropdown-item">Dr. Sarah updated schedule</div>
                     </div>
-                    <div class="user-menu" id="btn-user-menu">
-                        <img src="https://ui-avatars.com/api/?name=Me&background=e5deff&color=5e4ad1&rounded=true" alt="User Avatar" class="user-avatar">
+                    <button class="user-menu" id="btn-user-menu" aria-label="Account">
+                        <span class="avatar avatar-soft">ME</span>
                         <span class="material-symbols-outlined">expand_more</span>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-user">
+                    </button>
+                    <div class="dropdown-menu dropdown-right" id="dropdown-user">
                         <div class="dropdown-item">Profile</div>
-                        <div class="dropdown-item">Settings</div>
+                        <div class="dropdown-item" data-goto="settings-view">Settings</div>
                         <div class="dropdown-item">Log out</div>
                     </div>
                 </div>
             </header>
 
-            <!-- Dashboard View -->
             <div id="dashboard-view" class="view-section active">
+                <div class="kpi-row">
+                    <article class="kpi">
+                        <div class="kpi-top">
+                            <span class="kpi-label">Patients Seen</span>
+                            <span class="trend up"><span class="material-symbols-outlined">trending_up</span>+12.5%</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-value" id="patients-seen-value">2,614</span>
+                            <div class="kpi-visual"><canvas id="patientsSeenSparkline"></canvas></div>
+                        </div>
+                    </article>
+                    <article class="kpi">
+                        <div class="kpi-top">
+                            <span class="kpi-label">Pending Reports</span>
+                            <span class="trend warn"><span class="material-symbols-outlined">trending_up</span>+8.6%</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-value">35</span>
+                        </div>
+                    </article>
+                    <article class="kpi">
+                        <div class="kpi-top">
+                            <span class="kpi-label">Efficiency Score</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-value">92%</span>
+                            <div class="kpi-visual kpi-gauge"><canvas id="efficiencyChart"></canvas></div>
+                        </div>
+                    </article>
+                </div>
+
                 <div class="dashboard-grid">
-                <!-- Left Column (Metrics & Chart & History) -->
-                <div class="main-column">
-                    <!-- Metrics Row -->
-                    <div class="metrics-row">
-                        <!-- Patients Seen -->
-                        <div class="metric-card primary-card">
-                            <div class="metric-header">
-                                <h3>Patients Seen</h3>
-                            </div>
-                            <div class="metric-value">
-                                <span id="patients-seen-value">2,614</span>
-                                <div style="width: 80px; height: 30px; margin-left: auto;">
-                                    <canvas id="patientsSeenSparkline"></canvas>
+                    <div class="main-column">
+                        <section class="panel chart-section">
+                            <div class="panel-head">
+                                <div class="panel-title">
+                                    <h3>Patient Chart</h3>
+                                    <p>Vitals</p>
+                                </div>
+                                <div class="panel-actions">
+                                    <div class="segmented" id="vitalsTimeFilter" role="group" aria-label="Time range">
+                                        <button type="button" class="active" data-range="All">All</button>
+                                        <button type="button" data-range="1M">1M</button>
+                                        <button type="button" data-range="6M">6M</button>
+                                    </div>
+                                    <button class="btn-secondary-sm">
+                                        <span class="material-symbols-outlined">add</span>
+                                        Patient Chart
+                                    </button>
                                 </div>
                             </div>
-                            <div class="metric-footer">
-                                <span class="label">Patients Seen</span>
-                                <span class="trend positive">+12.5%</span>
+                            <div class="chart-legend">
+                                <span class="legend-item"><span class="legend-swatch solid"></span>Vitals</span>
+                                <span class="legend-item"><span class="legend-swatch dashed"></span>Mapping</span>
                             </div>
-                        </div>
+                            <div class="chart-container">
+                                <canvas id="vitalsChart"></canvas>
+                            </div>
+                        </section>
 
-                        <!-- Pending Reports -->
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <h3>Pending Reports</h3>
+                        <section class="panel history-section">
+                            <div class="panel-head">
+                                <div class="panel-title"><h3>History</h3></div>
+                                <button class="link-btn" data-goto="patients-view">
+                                    View all
+                                    <span class="material-symbols-outlined">arrow_forward</span>
+                                </button>
                             </div>
-                            <div class="metric-value dark-text">35</div>
-                            <div class="metric-footer">
-                                <span class="label">Pending Reports</span>
-                                <span class="trend warning">+8.6%</span>
+                            <div class="table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Last Visit</th>
+                                            <th class="num">Vitals</th>
+                                            <th>Last Lab/Imund</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="history-table-body"></tbody>
+                                </table>
                             </div>
-                        </div>
-
-                        <!-- Efficiency Score -->
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <h3>Efficiency Score</h3>
-                            </div>
-                            <div class="gauge-container">
-                                <canvas id="efficiencyChart"></canvas>
-
-                            </div>
-                            <div class="metric-footer center">
-                                <span class="label">Efficiency</span>
-                            </div>
-                        </div>
+                        </section>
                     </div>
 
-                    <!-- Chart Section -->
-                    <div class="chart-section card">
-                        <div class="card-header">
-                            <h2>Patient Chart</h2>
-                            <button class="btn-primary-sm">
-                                <span class="material-symbols-outlined">add</span>
-                                Patient Chart
-                            </button>
-                        </div>
-                        <div class="chart-controls">
-                            <h3>Vitals</h3>
-                            <select id="vitalsTimeFilter" class="chart-filter">
-                                <option value="All">All</option>
-                                <option value="1M">1M</option>
-                                <option value="6M">6M</option>
-                            </select>
-                            <div class="chart-legend" style="margin-left: auto;">
-                                <span class="legend-item"><span class="dot blue"></span> Vitals</span>
-                                <span class="legend-item"><span class="dot light-blue"></span> Mapping</span>
-                                <span class="legend-item"><span class="dot yellow"></span> BP</span>
-                                <span class="legend-item"><span class="dot grey"></span> HR</span>
+                    <div class="side-column">
+                        <section class="panel">
+                            <div class="panel-head">
+                                <div class="panel-title"><h3>Upcoming Appointments</h3></div>
+                                <span class="count-chip" id="appointments-count"></span>
                             </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="vitalsChart"></canvas>
-                        </div>
-                    </div>
+                            <div class="appointment-list" id="appointments-list-container"></div>
+                        </section>
 
-                    <!-- History Table -->
-                    <div class="history-section card">
-                        <div class="card-header">
-                            <h2>History</h2>
-                        </div>
-                        <table class="history-table">
-                            <thead>
-                                <tr>
-                                    <th>Patient</th>
-                                    <th>Last Visit</th>
-                                    <th>Vitals</th>
-                                    <th>Last Lab/Imund</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-table-body">
-                                <!-- Dynamic rows will be rendered here -->
-                            </tbody>
-                        </table>
+                        <section class="panel">
+                            <div class="panel-head">
+                                <div class="panel-title"><h3>Tasks</h3></div>
+                                <span class="count-chip" id="tasks-count"></span>
+                            </div>
+                            <div class="task-list" id="tasks-list-container"></div>
+                            <form class="task-add" id="form-add-task">
+                                <input type="text" id="task-title" class="form-control" placeholder="Add a task" aria-label="New task" required>
+                                <button type="submit" class="icon-btn sm" aria-label="Add task"><span class="material-symbols-outlined">add</span></button>
+                            </form>
+                        </section>
                     </div>
-                </div>
-
-                <!-- Right Column (Appointments & Tasks) -->
-                <div class="side-column">
-                    <!-- Upcoming Appointments -->
-                    <div class="appointments-section">
-                        <div class="section-header">
-                            <h3>Upcoming Appointments</h3>
-                        </div>
-                        <div class="appointment-list" id="appointments-list-container">
-                            <!-- Dynamic appointments will be rendered here -->
-                        </div>
-                    </div>
-
-                    <!-- Tasks -->
-                    <div class="tasks-section">
-                        <div class="section-header">
-                            <h3>Tasks</h3>
-                        </div>
-                        <div class="task-list" id="tasks-list-container">
-                            <!-- Dynamic tasks will be rendered here -->
-                        </div>
-                    </div>
-                </div>
                 </div>
             </div>
 
-            <!-- Patients View -->
             <div id="patients-view" class="view-section" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
+                <div class="page-head">
+                    <div>
                         <h2>Patients Directory</h2>
-                        <button class="btn-primary-sm" id="btn-add-patient">
-                            <span class="material-symbols-outlined">add</span>
-                            Add Patient
-                        </button>
+                        <p id="patients-count"></p>
                     </div>
-                    <div class="table-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <button class="btn-primary-sm" id="btn-add-patient">
+                        <span class="material-symbols-outlined">add</span>
+                        Add Patient
+                    </button>
+                </div>
+                <section class="panel panel-flush">
+                    <div class="table-toolbar">
                         <div class="search-bar">
                             <span class="material-symbols-outlined">search</span>
-                            <input type="text" id="patients-search" placeholder="Search patients...">
+                            <input type="text" id="patients-search" placeholder="Search patients..." aria-label="Search patients">
                         </div>
-                        <select id="patients-filter" class="chart-filter">
+                        <select id="patients-filter" class="form-control select-sm" aria-label="Filter by status">
                             <option value="All">All Status</option>
                             <option value="completed">Completed</option>
                             <option value="overdue">Overdue</option>
                         </select>
                     </div>
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Last Visit</th>
-                                <th>Vitals</th>
-                                <th>Last Lab</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="patients-directory-body">
-                            <!-- Dynamic rows -->
-                        </tbody>
-                    </table>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Last Visit</th>
+                                    <th class="num">Vitals</th>
+                                    <th>Last Lab</th>
+                                    <th>Status</th>
+                                    <th class="actions-col"><span class="sr-only">Actions</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-directory-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="table-foot" id="patients-foot"></div>
+                </section>
+            </div>
+
+            <div id="reports-view" class="view-section" style="display: none;">
+                <div class="empty-state">
+                    <span class="empty-icon material-symbols-outlined">bar_chart</span>
+                    <h2>Analytics & Reports</h2>
+                    <p>Functional view coming soon.</p>
+                    <button class="btn-secondary-sm" data-goto="dashboard-view">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Back to Dashboard
+                    </button>
                 </div>
             </div>
 
-            <!-- Reports View -->
-            <div id="reports-view" class="view-section" style="display: none;">
-                <h2>Analytics & Reports</h2>
-                <p>Functional view coming soon.</p>
-            </div>
-
-            <!-- Settings View -->
             <div id="settings-view" class="view-section" style="display: none;">
-                <div class="dashboard-grid">
-                    <div class="main-column">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Clinic Profile</h2>
-                                <button class="btn-primary-sm">Save Changes</button>
+                <div class="page-head">
+                    <div><h2>Settings</h2></div>
+                </div>
+                <div class="settings-stack">
+                    <section class="panel panel-flush">
+                        <form class="settings-form" id="form-clinic">
+                            <div class="settings-row">
+                                <div class="settings-intro"><h3>Clinic Profile</h3></div>
+                                <div class="settings-fields">
+                                    <div class="form-group">
+                                        <label for="clinic-name">Clinic Name</label>
+                                        <input type="text" id="clinic-name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="clinic-address">Address</label>
+                                        <input type="text" id="clinic-address" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="clinic-email">Contact Email</label>
+                                        <input type="email" id="clinic-email" class="form-control">
+                                    </div>
+                                </div>
                             </div>
-                            <form class="settings-form">
-                                <div class="form-group">
-                                    <label>Clinic Name</label>
-                                    <input type="text" class="form-control" value="DoctorSuno Primary Care">
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="form-control" value="123 Health Ave, Medical District">
-                                </div>
-                                <div class="form-group">
-                                    <label>Contact Email</label>
-                                    <input type="email" class="form-control" value="contact@doctorsuno.com">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="side-column">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Staff Management</h2>
-                                <button class="btn-primary-sm" id="btn-add-staff">
+                            <div class="panel-foot">
+                                <span class="save-note" id="clinic-saved" role="status" hidden>Saved</span>
+                                <button type="submit" class="btn-primary-sm">Save Changes</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="panel panel-flush">
+                        <div class="settings-row">
+                            <div class="settings-intro">
+                                <h3>Staff Management</h3>
+                                <button class="btn-secondary-sm" id="btn-add-staff">
                                     <span class="material-symbols-outlined">add</span>
+                                    Add Staff
                                 </button>
                             </div>
-                            <div class="staff-list" id="staff-list-container">
-                                <!-- Dynamic staff -->
+                            <div class="staff-list" id="staff-list-container"></div>
+                        </div>
+                    </section>
+
+                    <section class="panel panel-flush">
+                        <div class="settings-row">
+                            <div class="settings-intro"><h3>Demo Data</h3></div>
+                            <div class="settings-fields">
+                                <p class="settings-help">Everything you add or change in this demo is saved in this browser. Reset to start over with the sample data.</p>
+                                <div><button class="btn-secondary-sm danger" id="btn-reset-demo">
+                                    <span class="material-symbols-outlined">restart_alt</span>
+                                    Reset demo data
+                                </button></div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
 
